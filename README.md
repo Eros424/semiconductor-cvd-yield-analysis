@@ -1,3 +1,9 @@
+## Key Findings
+
+- Compared Normal and Abnormal batches to identify process parameter differences.
+- Visualized CVD process excursions through temperature, pressure, gas flow and yield trends.
+- Analyzed relationships between process parameters and manufacturing yield.
+- Built a reusable Python workflow for semiconductor manufacturing data analysis.
 # Semiconductor CVD Process & Yield Analysis
 
 A Python-based semiconductor manufacturing data analysis project focused on CVD process parameters, abnormal batch detection, and yield performance.
