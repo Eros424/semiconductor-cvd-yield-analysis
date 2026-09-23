@@ -1,6 +1,6 @@
 # Semiconductor Equipment Process Monitoring & Yield Analysis
 
-![Dashboard preview showing CVD yield, pressure, gas flow, and temperature trends](images/dashboard_preview.png)
+![Updated dashboard combining yield, pressure, gas flow, and temperature analyses](images/dashboard_preview.png)
 
 This project simulates a semiconductor CVD process monitoring environment. Using Python and a 500-batch synthetic dataset, it examines relationships between process parameters and wafer yield, compares normal and abnormal batches, and turns process trends into a structured engineering investigation.
 

@@ -12,10 +12,10 @@ PROJECT_DIR = Path(__file__).resolve().parent
 OUTPUT_PATH = PROJECT_DIR / "images" / "dashboard_preview.png"
 
 PANELS = (
-    ("Yield Trend", "images/batch_trends/cvd02_2026-01-10_yield_trend.png"),
-    ("Pressure Trend", "images/portfolio/portfolio_02_pressure.png"),
-    ("Gas Flow Trend", "images/portfolio/portfolio_03_gas_flow.png"),
-    ("Temperature Trend", "images/portfolio/portfolio_04_temperature.png"),
+    ("Yield Trend", "results/yield_analysis.png"),
+    ("Pressure Trend", "results/pressure_analysis.png"),
+    ("Gas Flow Trend", "results/gas_flow_analysis.png"),
+    ("Temperature Trend", "results/temperature_analysis.png"),
 )
 
 
