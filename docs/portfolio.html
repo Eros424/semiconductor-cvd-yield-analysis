@@ -3,18 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="An engineering portfolio report on simulated semiconductor CVD equipment process monitoring and yield analysis.">
-  <title>Semiconductor Equipment Process Monitoring &amp; Yield Analysis | Engineering Portfolio</title>
+  <meta name="description" content="A semiconductor process engineering case study using simulated CVD manufacturing data to investigate yield excursions and define verification actions.">
+  <title>Semiconductor CVD Yield Improvement Analysis | Process Engineering Case Study</title>
   <style>
     :root {
       color-scheme: light;
-      --paper: #f5f3ee;
-      --surface: #fffefa;
+      --paper: #ffffff;
+      --surface: #f7f9f7;
       --ink: #202c2b;
       --muted: #5d6966;
       --rule: #d8ddd5;
       --accent: #526b5e;
-      --deep: #172724;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
@@ -25,15 +24,16 @@
     .site-nav { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 20px 0; font-size: .79rem; letter-spacing: .09em; text-transform: uppercase; }
     .site-nav a { text-decoration: none; }
     .site-nav .links { display: flex; flex-wrap: wrap; gap: 20px; }
-    .hero { background: var(--deep); color: #f8f7f2; padding: 68px 0 72px; }
-    .hero .eyebrow { color: #a7c2ac; }
+    .hero { background: var(--paper); color: var(--ink); padding: 68px 0 72px; border-bottom: 1px solid var(--rule); }
+    .hero .eyebrow { color: var(--accent); }
     .eyebrow { margin: 0 0 12px; color: var(--accent); font-size: .76rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
     h1, h2, h3, p { margin-top: 0; }
     h1 { max-width: 900px; margin-bottom: 22px; font: 400 clamp(2.65rem, 6vw, 5.3rem)/1.04 Georgia, "Times New Roman", serif; letter-spacing: -.035em; }
     h2 { margin-bottom: 20px; font: 400 clamp(2rem, 3.6vw, 3rem)/1.12 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
     h3 { margin-bottom: 8px; font-size: 1.1rem; }
-    .hero-lede { max-width: 720px; color: #d6dfd8; font-size: 1.12rem; }
-    .hero-note { max-width: 780px; margin: 34px 0 0; padding-top: 18px; border-top: 1px solid #567168; color: #c1d0c7; font-size: .9rem; }
+    .hero-lede { max-width: 780px; color: var(--ink); font-size: 1.12rem; }
+    .hero-context { max-width: 780px; color: var(--muted); }
+    .hero-note { max-width: 780px; margin: 34px 0 0; padding-top: 18px; border-top: 1px solid var(--rule); color: var(--muted); font-size: .9rem; }
     main section { padding: 70px 0; border-bottom: 1px solid var(--rule); }
     .section-head { display: grid; grid-template-columns: 220px 1fr; gap: 28px; }
     .section-head > .eyebrow { padding-top: 9px; }
@@ -44,12 +44,13 @@
     .metric { padding: 25px 28px; background: var(--surface); }
     .metric strong { display: block; font: 400 2.45rem/1 Georgia, "Times New Roman", serif; }
     .metric span { display: block; margin-top: 8px; color: var(--muted); font-size: .86rem; }
-    .parameter-list { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 30px; }
-    .parameter-list div { padding: 18px; border-top: 2px solid var(--accent); background: var(--surface); font-weight: 600; }
-    .parameter-list small { display: block; margin-top: 4px; color: var(--muted); font-weight: 400; }
     .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 0; margin: 28px 0 0; list-style: none; }
     .flow li { min-height: 128px; padding: 18px; background: var(--surface); border: 1px solid var(--rule); }
     .flow .step { display: block; margin-bottom: 14px; color: var(--accent); font-size: .75rem; letter-spacing: .1em; }
+    .investigation-flow { max-width: 780px; padding: 0; margin: 28px 0 0; list-style: none; counter-reset: investigation; }
+    .investigation-flow li { position: relative; padding: 12px 20px 12px 68px; margin-bottom: 22px; border-left: 3px solid var(--accent); background: var(--surface); font-weight: 600; counter-increment: investigation; }
+    .investigation-flow li::before { content: counter(investigation, decimal-leading-zero); position: absolute; left: 20px; color: var(--accent); font-size: .78rem; letter-spacing: .08em; }
+    .investigation-flow li:not(:last-child)::after { content: "↓"; position: absolute; left: 28px; bottom: -26px; color: var(--accent); font-size: 1.2rem; }
     .figure-card { margin: 28px 0 0; background: var(--surface); border: 1px solid var(--rule); }
     #monitoring article + article { margin-top: 58px; }
     .figure-card img { display: block; width: 100%; height: auto; }
@@ -58,26 +59,32 @@
     .reading strong { display: block; margin-bottom: 4px; font-size: .75rem; letter-spacing: .09em; text-transform: uppercase; }
     .analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 28px; }
     .analysis-grid > div { padding: 26px 28px; background: var(--surface); border: 1px solid var(--rule); }
+    .table-scroll { max-width: 100%; overflow-x: auto; }
     .data-table { width: 100%; border-collapse: collapse; margin: 26px 0 12px; background: var(--surface); font-variant-numeric: tabular-nums; }
     .data-table th, .data-table td { padding: 12px 14px; border-bottom: 1px solid var(--rule); text-align: left; }
     .data-table th { color: var(--muted); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; }
     .caveat { padding: 20px 24px; margin-top: 28px; border-left: 3px solid var(--accent); background: #e8ede7; color: #344b40; }
     .skills { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 22px 0 0; list-style: none; }
     .skills li { padding: 8px 14px; border: 1px solid var(--rule); background: var(--surface); }
-    footer { padding: 42px 0 52px; color: var(--muted); font-size: .88rem; }
+    footer { padding: 42px 0 52px; color: var(--muted); }
+    footer h2 { color: var(--ink); }
+    footer ol { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding-left: 20px; }
+    footer .source-link { margin-top: 34px; font-size: .88rem; }
     @media (max-width: 850px) {
       .section-head { display: block; }
-      .parameter-list, .flow { grid-template-columns: repeat(2, 1fr); }
+      .flow { grid-template-columns: repeat(2, 1fr); }
       .site-nav { align-items: flex-start; flex-direction: column; }
+      footer ol { grid-template-columns: repeat(3, 1fr); }
     }
     @media (max-width: 600px) {
       .wrap { width: min(100% - 32px, 1160px); }
       .hero { padding: 52px 0 58px; }
       main section { padding: 52px 0; }
       .metrics, .analysis-grid, .figure-card figcaption { grid-template-columns: 1fr; }
-      .parameter-list, .flow { grid-template-columns: 1fr; }
-      .data-table { display: block; overflow-x: auto; white-space: nowrap; }
+      .flow { grid-template-columns: 1fr; }
+      .data-table { min-width: 520px; }
       .figure-card figcaption { padding: 20px; }
+      footer ol { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -86,6 +93,7 @@
     <nav class="site-nav" aria-label="Primary navigation">
       <a href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">CVD / Engineering Portfolio</a>
       <div class="links">
+        <a href="#objective">Objective</a>
         <a href="#process">Process</a>
         <a href="#monitoring">Monitoring</a>
         <a href="#root-cause">Investigation</a>
@@ -95,9 +103,10 @@
   </div>
   <header class="hero">
     <div class="wrap">
-      <p class="eyebrow">Semiconductor equipment · process monitoring</p>
-      <h1>Semiconductor Equipment Process Monitoring &amp; Yield Analysis</h1>
-      <p class="hero-lede">A structured engineering review of batch yield, chamber parameters, process excursions, and investigation priorities.</p>
+      <p class="eyebrow">Process Engineering Case Study</p>
+      <h1>Semiconductor CVD Yield Improvement Analysis</h1>
+      <p class="hero-lede">Using manufacturing data analysis to investigate CVD yield excursion, identify potential root causes, and develop improvement directions.</p>
+      <p class="hero-context">This project simulates a semiconductor fab yield investigation workflow by analyzing process parameters, equipment variation, and statistical evidence.</p>
       <p class="hero-note">Portfolio simulation · 500 synthetic batches · three CVD tools · abnormal batch threshold: yield &lt; 95%</p>
     </div>
   </header>
@@ -118,26 +127,70 @@
       </div>
     </section>
 
-    <section id="process" aria-labelledby="process-title">
+    <section id="objective" aria-labelledby="objective-title">
       <div class="section-head">
-        <p class="eyebrow">02 / Process</p>
+        <p class="eyebrow">02 / Objective</p>
         <div class="prose">
-          <h2 id="process-title">CVD Process Introduction</h2>
-          <p>Chemical vapor deposition forms a thin film on a wafer through reactions of gases in a controlled chamber. Temperature, pressure, gas flow, and process time affect deposition conditions. Film thickness is measured afterward as one indicator of the resulting film. Changes in these variables can affect film consistency and may coincide with yield changes.</p>
+          <h2 id="objective-title">Project Objective</h2>
+          <p>This case study simulates a yield excursion investigation in semiconductor manufacturing using 500 CVD batch records.</p>
+          <ul>
+            <li>Analyze process parameter behavior.</li>
+            <li>Identify abnormal yield excursions.</li>
+            <li>Compare normal and abnormal batches.</li>
+            <li>Investigate tool and recipe variation.</li>
+            <li>Develop directions for root cause verification.</li>
+          </ul>
+          <p>The goal is to apply manufacturing engineering logic to a process problem, from observation through verification and corrective action.</p>
         </div>
       </div>
-      <div class="parameter-list" aria-label="Monitored process variables">
-        <div>Temperature<small>Chamber thermal condition</small></div>
-        <div>Pressure<small>Chamber environment</small></div>
-        <div>Gas Flow<small>Reactant delivery</small></div>
-        <div>Process Time<small>Deposition duration</small></div>
-        <div>Film Thickness<small>Measured film outcome</small></div>
+    </section>
+
+    <section aria-labelledby="investigation-flow-title">
+      <div class="section-head">
+        <p class="eyebrow">03 / Method</p>
+        <div>
+          <h2 id="investigation-flow-title">Semiconductor Process Investigation Flow</h2>
+          <p class="prose">Each stage narrows the investigation before a process change is considered.</p>
+        </div>
+      </div>
+      <ol class="investigation-flow" aria-label="Yield excursion investigation steps">
+        <li>Process Data Collection</li>
+        <li>Yield Excursion Detection</li>
+        <li>Parameter Correlation Analysis</li>
+        <li>Normal / Abnormal Comparison</li>
+        <li>Tool &amp; Recipe Isolation</li>
+        <li>Root Cause Investigation</li>
+        <li>Corrective Action</li>
+      </ol>
+    </section>
+
+    <section id="process" aria-labelledby="process-title">
+      <div class="section-head">
+        <p class="eyebrow">04 / Process</p>
+        <div class="prose">
+          <h2 id="process-title">CVD Process Background</h2>
+          <p>Chemical Vapor Deposition (CVD) is a key semiconductor process used for thin film deposition. Gases react in a controlled chamber to form a film on the wafer. Temperature, pressure, gas flow, and process time shape the deposition conditions; film thickness and defects provide output signals.</p>
+          <p>Process engineers evaluate multiple parameters together rather than judging root cause from a single variable.</p>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Parameter</th><th>Engineering Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>Temperature</td><td>Reaction rate and film quality control</td></tr>
+            <tr><td>Pressure</td><td>Reaction environment and deposition behavior</td></tr>
+            <tr><td>Gas Flow</td><td>Reactant concentration and uniformity</td></tr>
+            <tr><td>Film Thickness</td><td>Process output indicator</td></tr>
+            <tr><td>Defect Count</td><td>Quality indicator</td></tr>
+            <tr><td>Yield</td><td>Manufacturing performance indicator</td></tr>
+          </tbody>
+        </table>
       </div>
     </section>
 
     <section aria-labelledby="flow-title">
       <div class="section-head">
-        <p class="eyebrow">03 / Workflow</p>
+        <p class="eyebrow">05 / Deposition sequence</p>
         <div>
           <h2 id="flow-title">Process Flow Concept</h2>
           <p class="prose">A simple monitoring loop connects equipment settings to metrology and yield signals.</p>
@@ -153,7 +206,7 @@
     </section>
 
     <section id="monitoring" aria-labelledby="monitoring-title">
-      <p class="eyebrow">04 / Evidence</p>
+      <p class="eyebrow">06 / Evidence</p>
       <h2 id="monitoring-title">Process Trend Monitoring</h2>
       <p class="prose">The following charts focus on CVD-02 on 2026-01-10. The marked interval is a review window derived from the simulated batch sequence, not a confirmed equipment failure.</p>
 
@@ -204,7 +257,7 @@
 
     <section aria-labelledby="thickness-title">
       <div class="section-head">
-        <p class="eyebrow">05 / Metrology</p>
+        <p class="eyebrow">07 / Metrology</p>
         <div class="prose">
           <h2 id="thickness-title">Film Thickness Analysis</h2>
           <p>Film thickness is a measured outcome of deposition. Its distribution can reveal shifts or wider variation that justify a recipe-level review.</p>
@@ -221,14 +274,14 @@
 
     <section aria-labelledby="comparison-title">
       <div class="section-head">
-        <p class="eyebrow">06 / Comparison</p>
+        <p class="eyebrow">08 / Comparison</p>
         <div class="prose">
           <h2 id="comparison-title">Normal vs Abnormal Batch Comparison</h2>
           <p>Batches are labeled abnormal when yield is below 95%. Group comparisons are a screening tool: they help prioritize checks, but the label is derived from yield and is not an independent fault diagnosis.</p>
         </div>
       </div>
       <p>The table narrows the comparison to CVD-02 on 2026-01-10, rather than mixing all tools and dates.</p>
-      <table class="data-table">
+      <div class="table-scroll"><table class="data-table">
         <thead><tr><th>Parameter</th><th>Normal (n=19)</th><th>Abnormal (n=7)</th></tr></thead>
         <tbody>
           <tr><td>Yield</td><td>97.30%</td><td>90.25%</td></tr>
@@ -237,12 +290,53 @@
           <tr><td>Gas Flow</td><td>100.23 sccm</td><td>106.66 sccm</td></tr>
           <tr><td>Film Thickness</td><td>101.33 nm</td><td>104.81 nm</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <p class="prose">The abnormal group shows higher average values for these parameters. Compare within the same recipe and inspect tool records before treating any difference as causal.</p>
     </section>
 
+    <section aria-labelledby="screening-title">
+      <div class="section-head">
+        <p class="eyebrow">09 / Statistical screen</p>
+        <div class="prose">
+          <h2 id="screening-title">Correlation &amp; Statistical Evidence</h2>
+          <p>Across all 500 simulated batches, Pearson correlation is used to rank signals associated with yield. It is a screening measure, not a causal test. Defect Count has the strongest negative relationship (r = −0.635), followed by Pressure (r = −0.432), Temperature (r = −0.350), Film Thickness (r = −0.316), and Gas Flow (r = −0.244).</p>
+          <p>Welch's t-test compares normal and abnormal groups across the full dataset. The p-values below describe group differences; Cohen's d describes their standardized size. Both are affected by recipe mix and by defining the groups using yield.</p>
+        </div>
+      </div>
+      <div class="table-scroll"><table class="data-table">
+        <thead><tr><th>Parameter</th><th>Yield r</th><th>Welch p-value</th><th>Cohen's d</th></tr></thead>
+        <tbody>
+          <tr><td>Pressure</td><td>−0.432</td><td>2.52 × 10⁻⁷</td><td>0.928</td></tr>
+          <tr><td>Temperature</td><td>−0.350</td><td>5.23 × 10⁻⁷</td><td>0.796</td></tr>
+          <tr><td>Gas Flow</td><td>−0.244</td><td>0.00475</td><td>0.438</td></tr>
+          <tr><td>Film Thickness</td><td>−0.316</td><td>3.81 × 10⁻⁷</td><td>0.785</td></tr>
+          <tr><td>Process Time</td><td>−0.110</td><td>0.0170</td><td>0.343</td></tr>
+        </tbody>
+      </table></div>
+      <p class="prose">For the focused CVD-02 comparison on 2026-01-10, Cohen's d is 2.961 for Pressure, 2.606 for Gas Flow, 1.915 for Temperature, and 0.251 for Process Time. These selected-window effect sizes help prioritize checks; the group sizes are 19 normal and 7 abnormal batches.</p>
+    </section>
+
+    <section aria-labelledby="isolation-title">
+      <div class="section-head">
+        <p class="eyebrow">10 / Isolation</p>
+        <div class="prose">
+          <h2 id="isolation-title">Tool &amp; Recipe Investigation</h2>
+          <p>CVD-02 has the highest overall abnormal ratio. A chi-square test across tools gives p = 0.0258, indicating an association between Tool_ID and batch status in this simulated dataset. Average temperature, pressure, and gas flow are similar across the three tools, so a tool-wide average alone does not explain the excursions.</p>
+        </div>
+      </div>
+      <div class="table-scroll"><table class="data-table">
+        <thead><tr><th>Tool_ID</th><th>Abnormal / Total</th><th>Abnormal Ratio</th><th>Mean Yield</th></tr></thead>
+        <tbody>
+          <tr><td>CVD-01</td><td>18 / 160</td><td>11.3%</td><td>96.56%</td></tr>
+          <tr><td>CVD-02</td><td>34 / 181</td><td>18.8%</td><td>96.45%</td></tr>
+          <tr><td>CVD-03</td><td>15 / 159</td><td>9.4%</td><td>96.72%</td></tr>
+        </tbody>
+      </table></div>
+      <p class="prose">Recipe isolation is required before interpreting film thickness. RCP-A targets 100 nm and RCP-B targets 105 nm; the dataset contains 400 RCP-A and 100 RCP-B batches. On CVD-02 on 2026-01-10, 5 of 21 RCP-A batches and 2 of 5 RCP-B batches fall below 95%. The RCP-B sample is too small to isolate a recipe effect. Compare a tool's batches within the same recipe and time window, then review setpoints and maintenance history. Recipe membership itself is not evidence of a recipe fault.</p>
+    </section>
+
     <section id="root-cause" aria-labelledby="root-cause-title">
-      <p class="eyebrow">07 / Engineering judgment</p>
+      <p class="eyebrow">11 / Engineering judgment</p>
       <h2 id="root-cause-title">Root Cause Analysis Example</h2>
       <div class="analysis-grid">
         <div><h3>Problem</h3><p>Yield variation is observed between CVD-02 production batches on 2026-01-10.</p></div>
@@ -255,9 +349,61 @@
       <p class="caveat"><strong>Interpretation limit.</strong> The records are simulated and the groups contain a mix of recipes. This analysis does not prove a root cause or validate an equipment fix.</p>
     </section>
 
+    <section aria-labelledby="interpretation-title">
+      <div class="section-head">
+        <p class="eyebrow">12 / Interpretation</p>
+        <div class="prose">
+          <h2 id="interpretation-title">Engineering Interpretation</h2>
+          <ol>
+            <li><strong>Defect Count</strong> has the strongest negative correlation with Yield and is a major quality indicator. It does not, by itself, explain where the defect increase begins.</li>
+            <li>Among controllable process parameters, <strong>Pressure and Temperature</strong> warrant further investigation. Gas Flow also shifts in the selected CVD-02 window.</li>
+            <li><strong>Film Thickness</strong> is a process output response. Its increase should be checked against recipe-specific targets before it is treated as a root cause.</li>
+            <li><strong>CVD-02</strong> has a higher abnormal batch ratio, while its average process conditions are similar to the other tools. Check variation over time and equipment stability.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="recommendation-title">
+      <div class="section-head">
+        <p class="eyebrow">13 / Action plan</p>
+        <div class="prose">
+          <h2 id="recommendation-title">Engineering Recommendation &amp; Next Action</h2>
+          <p>The observations below are hypotheses to verify against equipment and process history. They are not confirmed faults.</p>
+        </div>
+      </div>
+      <div class="table-scroll"><table class="data-table">
+        <thead><tr><th>Finding</th><th>Possible Cause</th><th>Recommended Action</th></tr></thead>
+        <tbody>
+          <tr><td>Pressure variation</td><td>APC control instability or chamber condition variation</td><td>Review pressure SPC trend and control response.</td></tr>
+          <tr><td>Temperature drift</td><td>Heater control variation</td><td>Check temperature stability and PM history.</td></tr>
+          <tr><td>Film Thickness increase</td><td>Deposition condition shift</td><td>Review process window and recipe stability.</td></tr>
+          <tr><td>Higher CVD-02 excursion ratio</td><td>Tool-to-tool variation</td><td>Compare alarm history and maintenance records.</td></tr>
+        </tbody>
+      </table></div>
+      <p class="caveat"><strong>Next verification.</strong> Current results provide a root cause investigation direction. Equipment history and longer time-series analysis are required for final confirmation before corrective action.</p>
+    </section>
+
+    <section aria-labelledby="mindset-title">
+      <div class="section-head">
+        <p class="eyebrow">14 / Decision discipline</p>
+        <div class="prose">
+          <h2 id="mindset-title">Engineering Mindset</h2>
+          <p>A parameter shift observed with lower yield is a hypothesis, not proof that “Parameter X causes yield loss.” Engineering decisions should follow a traceable sequence:</p>
+        </div>
+      </div>
+      <ol class="investigation-flow" aria-label="Engineering decision sequence">
+        <li>Observation</li>
+        <li>Statistical Evidence</li>
+        <li>Hypothesis</li>
+        <li>Verification</li>
+        <li>Corrective Action</li>
+      </ol>
+    </section>
+
     <section aria-labelledby="skills-title">
       <div class="section-head">
-        <p class="eyebrow">08 / Practice</p>
+        <p class="eyebrow">15 / Practice</p>
         <div>
           <h2 id="skills-title">Technical Skills</h2>
           <p class="prose">A practical workflow for equipment and process investigation, with transparent limits on what the data can support.</p>
@@ -271,7 +417,17 @@
     </section>
   </main>
   <footer class="wrap">
-    <p>Semiconductor Equipment Process Monitoring &amp; Yield Analysis · <a href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">View the source and dataset on GitHub</a></p>
+    <p class="eyebrow">16 / Roadmap</p>
+    <h2>Next Development</h2>
+    <p>Future improvements:</p>
+    <ol>
+      <li>SPC trend monitoring</li>
+      <li>Tool stability analysis</li>
+      <li>Alarm history correlation</li>
+      <li>Process drift detection</li>
+      <li>Interactive monitoring dashboard</li>
+    </ol>
+    <p class="source-link">Semiconductor CVD Yield Improvement Analysis · <a href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">View the source and dataset on GitHub</a></p>
   </footer>
 </body>
 </html>
