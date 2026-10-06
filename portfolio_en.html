@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="從良率下降到工程判斷，以 500 筆模擬 CVD 批次示範如何定位事件、比較設備、調查可能原因並規劃驗證。">
-  <title>CVD 良率異常調查｜製程分析面試作品集</title>
+  <meta name="description" content="A five-step CVD case study: detect a yield excursion, compare tools, investigate potential causes, plan validation and recommend engineering actions using 500 synthetic batches.">
+  <title>CVD Yield Excursion Investigation | Interview Portfolio</title>
   <style>
     :root {
       color-scheme: light;
@@ -324,108 +324,108 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script></head>
 <body>
-  <div class="wrap"><nav class="site-nav" aria-label="主要導覽">
+  <div class="wrap"><nav class="site-nav" aria-label="Primary navigation">
     <a href="#">CVD / Process Engineering</a>
-    <div class="links"><a href="#case">開始看案例</a><a href="#actions">工程行動</a><a href="technical_report.html">完整技術報告</a><a href="portfolio_en.html" lang="en">English</a></div>
+    <div class="links"><a href="#case">Explore the Case</a><a href="#actions">Engineering Actions</a><a href="docs/technical_report.html">Technical Report</a><a href="portfolio.html" lang="zh-Hant">中文版</a></div>
   </nav></div>
   <header class="hero"><div class="wrap">
     <p class="eyebrow">Semiconductor Process Analysis / Interview Portfolio</p>
-    <h1>良率下降時，<br>我會怎麼找出問題？</h1>
-    <p class="hero-lede">從 500 筆模擬批次，找出異常並排定工程調查順序。</p>
-    <div class="metrics" aria-label="案例摘要">
-      <div class="metric"><strong>500</strong><span>模擬批次</span></div>
-      <div class="metric"><strong>3</strong><span>CVD 設備</span></div>
-      <div class="metric"><strong>7.05</strong><span>當天平均良率差（百分點）</span></div>
+    <h1>When yield drops,<br>how do I investigate?</h1>
+    <p class="hero-lede">From 500 simulated batches to focused engineering investigation.</p>
+    <div class="metrics" aria-label="Case summary">
+      <div class="metric"><strong>500</strong><span>Simulated batches</span></div>
+      <div class="metric"><strong>3</strong><span>CVD tools</span></div>
+      <div class="metric"><strong>7.05</strong><span>Same-day yield gap (pp)</span></div>
     </div>
-    <p class="hero-note">模擬資料作品；設備原因與改善成效仍待現場驗證。</p>
-    <ol class="flow" aria-label="五步分析流程">
-      <li><a href="#case"><span class="step">01</span><span class="action-label">發現異常</span></a></li>
-      <li><a href="#tools"><span class="step">02</span><span class="action-label">比較設備</span></a></li>
-      <li><a href="#cause"><span class="step">03</span><span class="action-label">縮小原因</span></a></li>
-      <li><a href="#window"><span class="step">04</span><span class="action-label">規劃驗證</span></a></li>
-      <li><a href="#actions"><span class="step">05</span><span class="action-label">提出行動</span></a></li>
+    <p class="hero-note">Simulated data. Equipment causes and improvements require field validation.</p>
+    <ol class="flow" aria-label="Five-step analysis workflow">
+      <li><a href="#case"><span class="step">01</span><span class="action-label">Detect excursion</span></a></li>
+      <li><a href="#tools"><span class="step">02</span><span class="action-label">Compare tools</span></a></li>
+      <li><a href="#cause"><span class="step">03</span><span class="action-label">Investigate causes</span></a></li>
+      <li><a href="#window"><span class="step">04</span><span class="action-label">Plan validation</span></a></li>
+      <li><a href="#actions"><span class="step">05</span><span class="action-label">Engineering actions</span></a></li>
     </ol>
   </div></header>
   <main class="wrap">
     <section id="case">
       <p class="eyebrow">01 / Excursion Detection &amp; SPC</p>
-      <h2>先找時間點，再看一起改變的參數。</h2>
-      <p class="prose">我先檢查批次、時間與缺失值，再以 Yield &lt; 95% 篩出需要調查的批次。CVD-02 在 2026-01-10 出現連續 7 筆低良率批次，值得回頭檢查同一段時間的製程條件。</p>
+      <h2>Locate the time window, then compare the signals.</h2>
+      <p class="prose">I first check batch records, timestamps and missing values, then flag yield below 95% for review. On January 10, 2026, CVD-02 has 7 consecutive low-yield batches, prompting a closer look at process conditions in the same window.</p>
       <div class="metrics">
-        <div class="metric"><strong>14:18–19:42</strong><span>第一筆至最後一筆低良率觀測</span></div>
-        <div class="metric"><strong>90.25% / 97.30%</strong><span>低良率組 / 當天其餘批次平均 Yield</span></div>
-        <div class="metric"><strong>20:36</strong><span>下一筆首次觀察到恢復；實際恢復時間未知</span></div>
+        <div class="metric"><strong>14:18–19:42</strong><span>First through last observed low-yield batch</span></div>
+        <div class="metric"><strong>90.25% / 97.30%</strong><span>Mean yield: low-yield group / other batches that day</span></div>
+        <div class="metric"><strong>20:36</strong><span>First observed recovery; physical recovery time is unknown</span></div>
       </div>
-      <figure class="figure-card"><img src="../figures/15_interview_case.png" alt="CVD-02 Yield, Pressure and Defect Count on 2026-01-10" loading="lazy">
-        <figcaption><p class="reading"><strong>Engineering Insight</strong>壓力與良率在同一筆批次出現偏移；起點的 Defect Count 卻是 0。這支持同步調查壓力，還不能說壓力先造成缺陷，再造成良率下降。</p></figcaption>
+      <figure class="figure-card"><img src="figures/15_interview_case.png" alt="CVD-02 Yield, Pressure and Defect Count on January 10, 2026" loading="lazy">
+        <figcaption><p class="reading"><strong>Engineering Insight</strong>Pressure and yield shift in the same batch, but Defect Count is 0 at onset. This supports investigating pressure alongside yield; it does not establish that pressure caused defects before yield dropped.</p></figcaption>
       </figure>
-      <div class="explain"><strong>我會這樣說明</strong><p>「我先找出異常在哪段時間，接著把良率和製程參數放在同一條時間軸。看見一起改變，是調查線索，還不是因果證明。」</p></div>
-      <details><summary>追問：95% 和 SPC 控制限有什麼不同？</summary>
-        <p>95% 是這個案例的低良率篩查門檻；SPC 則比較目前數值是否超出過去波動範圍。我使用 I-MR Chart，同時看單筆數值與前後批次變化。</p>
-        <p>不同設備、配方要分開建立基準。我取各 Tool × Recipe 前 60% 的時間序列估計控制限，後續固定使用。基準期本身也有訊號，這組控制限適合回溯篩查，尚未完成量產基準驗證。</p>
-        <p><a href="../figures/06_spc_pressure.png">查看 Pressure I-MR Chart</a> · <a href="../results/spc_excursions.csv">查看異常批次表</a> · <a href="../figures/10_cvd02_excursion_case.png">查看六項參數完整時間軸</a></p>
+      <div class="explain"><strong>How I would explain it</strong><p>“I first locate the excursion, then put yield and process parameters on the same timeline. Signals changing together give me an investigation lead, but they do not prove causation.”</p></div>
+      <details><summary>Follow-up: How does the 95% threshold differ from SPC limits?</summary>
+        <p>The 95% value is the case's low-yield screening threshold. SPC asks whether a measurement falls outside the historical variation range. I use I-MR charts to monitor individual values and changes between successive batches.</p>
+        <p>I establish separate baselines for each Tool × Recipe, estimate limits from the first chronological 60% of its records and freeze those limits for later observations. Signals also occur within the baseline, so these limits support retrospective screening and still need production baseline qualification.</p>
+        <p><a href="figures/06_spc_pressure.png">Pressure I-MR Chart</a> · <a href="results/spc_excursions.csv">Excursion Batch Table</a> · <a href="figures/10_cvd02_excursion_case.png">Full Six-Parameter Timeline</a></p>
       </details>
     </section>
     <section id="tools">
       <p class="eyebrow">02 / Tool Health</p>
-      <h2>設備好不好，要看失敗頻率，也要看波動。</h2>
-      <p class="prose">如果只看平均良率，三台設備很接近。我另外比較低良率比例與波動程度；分析波動時，先扣除各配方自己的平均值，減少配方切換造成的差異。波動用標準差（SD）表示，數字越大，代表批次差異越大。</p>
-      <div class="table-scroll"><table class="data-table"><caption>依 Recipe 平均值校正後的波動比較</caption>
-        <thead><tr><th>Tool</th><th>批次數</th><th>低良率比例</th><th>Yield SD<br>百分點</th><th>Pressure SD<br>Torr</th></tr></thead><tbody><tr><th scope="row">CVD-01</th><td>160</td><td>11.2%</td><td>2.00</td><td>0.257</td></tr>
+      <h2>Compare failure frequency and variability.</h2>
+      <p class="prose">The three tools have similar average yield. I also compare low-yield rates and variability, subtracting each recipe's mean before calculating variability to reduce recipe-mix effects. Standard deviation (SD) describes the spread: a higher value means greater batch-to-batch variation.</p>
+      <div class="table-scroll"><table class="data-table"><caption>Variability after centering each tool's observations by recipe mean</caption>
+        <thead><tr><th>Tool</th><th>Batches</th><th>Low-yield Rate</th><th>Yield SD<br>percentage points</th><th>Pressure SD<br>Torr</th></tr></thead><tbody><tr><th scope="row">CVD-01</th><td>160</td><td>11.2%</td><td>2.00</td><td>0.257</td></tr>
 <tr><th scope="row">CVD-02</th><td>181</td><td>18.8%</td><td>1.89</td><td>0.259</td></tr>
 <tr><th scope="row">CVD-03</th><td>159</td><td>9.4%</td><td>1.88</td><td>0.269</td></tr></tbody>
       </table></div>
       <ul class="finding-list">
-        <li><strong>CVD-02：</strong>低良率比例 18.8%，優先調查異常是否反覆發生。</li>
-        <li><strong>CVD-01：</strong>Yield 波動較大，追蹤良率的重複性。</li>
-        <li><strong>CVD-03：</strong>Pressure 波動較大，追蹤製程條件的穩定度。</li>
+        <li><strong>CVD-02:</strong> A 18.8% low-yield rate makes recurring excursions a priority for investigation.</li>
+        <li><strong>CVD-01:</strong> Higher yield variability calls for closer monitoring of yield repeatability.</li>
+        <li><strong>CVD-03:</strong> Higher pressure variability calls for closer monitoring of process-condition stability.</li>
       </ul>
-      <div class="explain"><strong>我會這樣說明</strong><p>「我不會只用一個平均值判定設備最差。異常最多、良率最不穩、壓力最不穩，可能是不同設備，後續檢查也應該不同。」</p></div>
-      <details><summary>追問：為什麼需要把 Recipe 分開？</summary>
-        <p>兩種配方的薄膜目標分別是 100 nm 與 105 nm。如果直接混在一起比較，可能把合理的配方差異誤認成設備漂移。扣除配方平均值能減少這個影響，但不能消除所有混雜因素。</p>
-        <p><a href="../figures/11_tool_health_comparison.png">查看完整 Tool Health 圖</a> · <a href="../results/tool_health_summary.csv">查看各項指標</a></p>
+      <div class="explain"><strong>How I would explain it</strong><p>“The tool with the most low-yield batches may differ from the tool with the largest yield or pressure variation. I use each measure to decide which checks to prioritize.”</p></div>
+      <details><summary>Follow-up: Why account for recipe differences?</summary>
+        <p>The two recipes target film thicknesses of 100 nm and 105 nm. Pooling them can make a legitimate recipe change look like tool drift. Centering by recipe mean reduces that effect, but it cannot remove every confounding factor.</p>
+        <p><a href="figures/11_tool_health_comparison.png">Full Tool Health Comparison</a> · <a href="results/tool_health_summary.csv">All Tool Health Metrics</a></p>
       </details>
     </section>
     <section id="cause">
       <p class="eyebrow">03 / Potential Root Cause</p>
-      <h2>缺陷最相關，為什麼我還是先查壓力？</h2>
-      <p class="prose">我結合 Yield 相關性、正常／低良率組的差異與效果量，再校正 Tool、Recipe 和時間，建立調查排序。全資料的前三項是：</p>
+      <h2>Defects rank first. Why investigate pressure first?</h2>
+      <p class="prose">I combine correlations with yield, group differences and effect sizes, then account for Tool, Recipe and time to prioritize potential contributors. The top three across the dataset are:</p>
       <ol class="finding-list">
-        <li><strong>Defect Count：</strong>與 Yield 關聯最強（r = -0.64），但可能是製程問題的結果，不能直接當成設備原因。</li>
-        <li><strong>Pressure：</strong>排名最高的製程變數，而且在案例起點與 Yield 同時偏移，因此列為優先檢查項目。</li>
-        <li><strong>Temperature：</strong>也有關聯，應一起核對配方設定與量測紀錄。</li>
+        <li><strong>Defect Count:</strong> The strongest association with yield (r = -0.64), but defects may be an outcome of a process problem rather than an equipment cause.</li>
+        <li><strong>Pressure:</strong> The highest-ranked process variable. It also shifts alongside yield at case onset, making it a priority for inspection.</li>
+        <li><strong>Temperature:</strong> Another associated variable; recipe settings and measurement records deserve review.</li>
       </ol>
-      <div class="explain"><strong>我會這樣說明</strong><p>「統計排名幫我縮小範圍，時間軸幫我判斷這個線索是否合理。兩者都指向壓力值得先查，但我還需要設備紀錄才能確認。」</p></div>
-      <details><summary>追問：如何避免把相關性當成根因？</summary>
-        <p>正常／異常組是依 Yield 分組，本來就會帶有結果選擇的影響；校正已知變數，也不能排除未知因素。我會查壓力設定與實測值、感測器校正、Throttle Valve、真空系統、漏氣與 MFC 紀錄，再確認異常是否重複。</p>
+      <div class="explain"><strong>How I would explain it</strong><p>“Statistical screening narrows the investigation. The timeline helps me assess whether a lead fits the event. Both make pressure worth checking first, but I still need equipment records to confirm the cause.”</p></div>
+      <details><summary>Follow-up: How do you avoid treating correlation as a root cause?</summary>
+        <p>The normal and abnormal groups are defined by yield, which introduces outcome-selection effects. Adjusting for known variables cannot exclude unknown factors. I would review pressure setpoints versus actual readings, sensor calibration, throttle-valve response, vacuum and leak checks, and MFC records, then look for repeat events.</p>
         <p>Equipment maintenance data is not available, therefore these are engineering hypotheses rather than confirmed hardware root causes.</p>
-        <p><a href="../figures/12_root_cause_summary.png">查看完整 Contributor Ranking</a> · <a href="../results/root_cause_summary.csv">查看效果量與統計結果</a></p>
+        <p><a href="figures/12_root_cause_summary.png">Full Contributor Ranking</a> · <a href="results/root_cause_summary.csv">Effect Sizes and Statistical Results</a></p>
       </details>
     </section>
     <section id="window">
       <p class="eyebrow">04 / Virtual DOE &amp; Process Window</p>
-      <h2>找到線索後，怎麼規劃下一步驗證？</h2>
-      <p class="prose">我把 Pressure 與 Temperature 組合起來，查看哪些歷史條件的 Yield 較高、波動較小。這是 <strong>Virtual DOE／觀察性分析</strong>，沒有實際做隨機化晶圓實驗。</p>
-      <p class="prose">RCP-A 的候選資料格有 47 筆批次，平均 Yield 97.66%，SD 0.79 個百分點。這能幫我規劃實驗條件，還不能直接當成合格製程範圍。</p>
-      <div class="explain"><strong>我會這樣說明</strong><p>「我用歷史資料找值得試的條件，再安排正式 DOE。高平均值還不夠，我也會看樣本數和波動，避免選到只是碰巧表現好的區間。」</p></div>
-      <details><summary>追問：候選範圍怎麼選？Pressure 和 Temperature 有交互作用嗎？</summary>
-        <p>各配方分別依 Pressure、Temperature 分成低／中／高三組；只在至少 10 筆樣本的資料格中，以平均 Yield 減去 SD 選候選格。這是探索性排序，不是規格或信賴下限。</p>
-        <p>RCP-A 候選觀測範圍：Pressure 7.965–8.072 Torr；Temperature 319.85–320.77 °C。範圍內仍可能有未取樣的組合。</p>
-        <p>迴歸的 Pressure × Temperature 交互項 p = 2.6e-08。這表示資料中的關聯會隨另一個條件改變，不代表已驗證真實製程效應；正式 DOE 需要隨機化、重複試驗與設備分組。</p>
-        <figure class="figure-card"><img src="../figures/14_process_window.png" alt="Observed Pressure and Temperature process window by recipe" loading="lazy"><figcaption><p class="reading"><strong>Engineering Insight</strong>紅框是值得進一步測試的歷史資料區間，不能直接拿來修改量產配方。RCP-B 候選只有 10 筆，證據更有限。</p></figcaption></figure>
-        <p><a href="../figures/13_doe_heatmap.png">查看 Virtual DOE Heatmap</a> · <a href="../results/process_window_summary.csv">查看每格樣本數與波動</a></p>
+      <h2>Use the evidence to plan validation.</h2>
+      <p class="prose">I examine Pressure and Temperature together to identify historical conditions with higher and more stable yield. This is <strong>Virtual DOE / Observational Analysis</strong>; no randomized wafer experiment was performed.</p>
+      <p class="prose">The RCP-A candidate cell contains 47 batches, with mean yield of 97.66% and SD of 0.79 percentage points. It helps select conditions for testing, but is not a qualified process window.</p>
+      <div class="explain"><strong>How I would explain it</strong><p>“Historical data helps me choose conditions worth testing in a formal DOE. I check sample size and variation alongside average yield, because a small high-yield group may simply be lucky.”</p></div>
+      <details><summary>Follow-up: How is the candidate selected, and do Pressure and Temperature interact?</summary>
+        <p>Within each recipe, I divide Pressure and Temperature into low, medium and high groups. Among cells with at least 10 batches, I select the highest mean yield minus SD. This is an exploratory ranking, not a specification or confidence bound.</p>
+        <p>RCP-A's candidate observed range is Pressure 7.965–8.072 Torr and Temperature 319.85–320.77 °C. Some combinations inside this rectangle may never have been sampled.</p>
+        <p>The regression's Pressure × Temperature interaction has p = 2.6e-08. The observed association changes with the other factor; this does not establish a validated process effect. A formal DOE needs randomization, replication and tool blocking.</p>
+        <figure class="figure-card"><img src="figures/14_process_window.png" alt="Observed Pressure and Temperature process window by recipe" loading="lazy"><figcaption><p class="reading"><strong>Engineering Insight</strong>The red rectangles identify historical conditions worth testing. They cannot directly justify a production recipe change. The RCP-B candidate has only 10 batches, so its evidence is more limited.</p></figcaption></figure>
+        <p><a href="figures/13_doe_heatmap.png">Virtual DOE Heatmap</a> · <a href="results/process_window_summary.csv">Cell Sample Sizes and Variability</a></p>
       </details>
     </section>
     <section id="actions">
       <p class="eyebrow">05 / Engineering Recommendations</p>
-      <h2>最後，把發現變成三個具體行動。</h2>
+      <h2>Turn the findings into three practical actions.</h2>
       <ol class="next-actions">
-        <li><strong>先攔下需要審查的訊號。</strong>對 Yield &lt; 95% 或超出同設備、同配方 SPC 控制限的批次提出工程審查；是否 Hold／Release，仍依正式規格與授權判定。</li>
-        <li><strong>優先核對壓力相關紀錄。</strong>比對異常前後的 Recipe、設定值、實測值與設備紀錄。若同配方壓力偏移反覆出現，再提出設備檢查與維護需求。</li>
-        <li><strong>用實驗驗證候選條件。</strong>規劃 Pressure × Temperature DOE，固定其他條件並納入設備分組，同時看 Yield、薄膜品質與缺陷。</li>
+        <li><strong>Flag batches for engineering review.</strong>Review yield below 95% or SPC signals against the same tool and recipe baseline. Hold/release decisions require approved specifications and authorization.</li>
+        <li><strong>Review pressure-related records first.</strong>Compare recipes, setpoints, actual readings and tool logs before and during the excursion. Repeated pressure shifts within the same recipe would support an equipment inspection and maintenance request.</li>
+        <li><strong>Validate candidate conditions experimentally.</strong>Plan a Pressure × Temperature DOE, keep other conditions fixed and block by tool. Evaluate yield, film quality and defects together.</li>
       </ol>
-      <div class="interview-close"><h3>這份作品展現的判斷</h3><p>我能從批次資料定位問題，區分配方差異與設備波動，用多種證據排定調查順序，並清楚說明哪些結論已被資料支持、哪些還需要驗證。</p></div>
+      <div class="interview-close"><h3>The engineering judgment this project demonstrates</h3><p>I can locate a problem in batch records, separate recipe differences from tool variation, combine evidence to prioritize an investigation and explain which conclusions the data supports and which still need validation.</p></div>
     </section>
   </main>
-  <footer class="wrap"><p>完整分析與原有圖表都保留，主頁以面試說明為主。</p><p><a href="technical_report.html">完整技術報告</a> · <a href="../README.md">README 與重跑方式</a> · <a href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">GitHub 原始碼</a></p></footer>
+  <footer class="wrap"><p>The interview page presents the main story. Full analysis and original charts remain available.</p><p><a href="portfolio.html" lang="zh-Hant">中文版</a> · <a href="docs/technical_report.html">Full Technical Report</a> · <a href="README.md">README and Reproduction Instructions</a> · <a href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">GitHub Source</a></p></footer>
 </body></html>

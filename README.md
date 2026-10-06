@@ -4,7 +4,7 @@
 
 This project simulates a semiconductor CVD process monitoring environment. Using Python and a 500-batch synthetic dataset, it examines relationships between process parameters and wafer yield, compares normal and abnormal batches, and turns process trends into a structured engineering investigation.
 
-**Engineering Portfolio:** [Open detailed semiconductor process monitoring report](https://eros424.github.io/semiconductor-cvd-yield-analysis/docs/portfolio.html)
+**Interview Portfolio:** [中文版](https://eros424.github.io/semiconductor-cvd-yield-analysis/docs/portfolio.html) · [English](https://eros424.github.io/semiconductor-cvd-yield-analysis/docs/portfolio_en.html) · [Full technical report](https://eros424.github.io/semiconductor-cvd-yield-analysis/docs/technical_report.html)
 
 ## Project Overview
 
@@ -57,8 +57,10 @@ Python · Pandas · NumPy · Matplotlib · SciPy · Exploratory Data Analysis ·
 - create_dashboard.py — README dashboard assembly
 - data/ — simulated CVD batch records
 - results/ — four presentation-ready monitoring charts
-- docs/portfolio.html — detailed engineering report
+- docs/portfolio.html — Chinese interview portfolio
+- docs/portfolio_en.html — English interview portfolio
+- docs/technical_report.html — detailed engineering report
 - images/ — original analysis figures and dashboard source assets
 - requirements.txt — Python dependencies
 
-**Engineering Portfolio:** [Open detailed semiconductor process monitoring report](https://eros424.github.io/semiconductor-cvd-yield-analysis/docs/portfolio.html)
+**Interview Portfolio:** [中文版](https://eros424.github.io/semiconductor-cvd-yield-analysis/docs/portfolio.html) · [English](https://eros424.github.io/semiconductor-cvd-yield-analysis/docs/portfolio_en.html) · [Full technical report](https://eros424.github.io/semiconductor-cvd-yield-analysis/docs/technical_report.html)

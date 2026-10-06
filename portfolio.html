@@ -326,7 +326,7 @@ document.addEventListener('DOMContentLoaded', () => {
 <body>
   <div class="wrap"><nav class="site-nav" aria-label="主要導覽">
     <a href="#">CVD / Process Engineering</a>
-    <div class="links"><a href="#case">開始看案例</a><a href="#actions">工程行動</a><a href="technical_report.html">完整技術報告</a><a href="portfolio_en.html" lang="en">English</a></div>
+    <div class="links"><a href="#case">開始看案例</a><a href="#actions">工程行動</a><a href="docs/technical_report.html">完整技術報告</a><a href="portfolio_en.html" lang="en">English</a></div>
   </nav></div>
   <header class="hero"><div class="wrap">
     <p class="eyebrow">Semiconductor Process Analysis / Interview Portfolio</p>
@@ -356,14 +356,14 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="metric"><strong>90.25% / 97.30%</strong><span>低良率組 / 當天其餘批次平均 Yield</span></div>
         <div class="metric"><strong>20:36</strong><span>下一筆首次觀察到恢復；實際恢復時間未知</span></div>
       </div>
-      <figure class="figure-card"><img src="../figures/15_interview_case.png" alt="CVD-02 Yield, Pressure and Defect Count on 2026-01-10" loading="lazy">
+      <figure class="figure-card"><img src="figures/15_interview_case.png" alt="CVD-02 Yield, Pressure and Defect Count on 2026-01-10" loading="lazy">
         <figcaption><p class="reading"><strong>Engineering Insight</strong>壓力與良率在同一筆批次出現偏移；起點的 Defect Count 卻是 0。這支持同步調查壓力，還不能說壓力先造成缺陷，再造成良率下降。</p></figcaption>
       </figure>
       <div class="explain"><strong>我會這樣說明</strong><p>「我先找出異常在哪段時間，接著把良率和製程參數放在同一條時間軸。看見一起改變，是調查線索，還不是因果證明。」</p></div>
       <details><summary>追問：95% 和 SPC 控制限有什麼不同？</summary>
         <p>95% 是這個案例的低良率篩查門檻；SPC 則比較目前數值是否超出過去波動範圍。我使用 I-MR Chart，同時看單筆數值與前後批次變化。</p>
         <p>不同設備、配方要分開建立基準。我取各 Tool × Recipe 前 60% 的時間序列估計控制限，後續固定使用。基準期本身也有訊號，這組控制限適合回溯篩查，尚未完成量產基準驗證。</p>
-        <p><a href="../figures/06_spc_pressure.png">查看 Pressure I-MR Chart</a> · <a href="../results/spc_excursions.csv">查看異常批次表</a> · <a href="../figures/10_cvd02_excursion_case.png">查看六項參數完整時間軸</a></p>
+        <p><a href="figures/06_spc_pressure.png">查看 Pressure I-MR Chart</a> · <a href="results/spc_excursions.csv">查看異常批次表</a> · <a href="figures/10_cvd02_excursion_case.png">查看六項參數完整時間軸</a></p>
       </details>
     </section>
     <section id="tools">
@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="explain"><strong>我會這樣說明</strong><p>「我不會只用一個平均值判定設備最差。異常最多、良率最不穩、壓力最不穩，可能是不同設備，後續檢查也應該不同。」</p></div>
       <details><summary>追問：為什麼需要把 Recipe 分開？</summary>
         <p>兩種配方的薄膜目標分別是 100 nm 與 105 nm。如果直接混在一起比較，可能把合理的配方差異誤認成設備漂移。扣除配方平均值能減少這個影響，但不能消除所有混雜因素。</p>
-        <p><a href="../figures/11_tool_health_comparison.png">查看完整 Tool Health 圖</a> · <a href="../results/tool_health_summary.csv">查看各項指標</a></p>
+        <p><a href="figures/11_tool_health_comparison.png">查看完整 Tool Health 圖</a> · <a href="results/tool_health_summary.csv">查看各項指標</a></p>
       </details>
     </section>
     <section id="cause">
@@ -399,7 +399,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <details><summary>追問：如何避免把相關性當成根因？</summary>
         <p>正常／異常組是依 Yield 分組，本來就會帶有結果選擇的影響；校正已知變數，也不能排除未知因素。我會查壓力設定與實測值、感測器校正、Throttle Valve、真空系統、漏氣與 MFC 紀錄，再確認異常是否重複。</p>
         <p>Equipment maintenance data is not available, therefore these are engineering hypotheses rather than confirmed hardware root causes.</p>
-        <p><a href="../figures/12_root_cause_summary.png">查看完整 Contributor Ranking</a> · <a href="../results/root_cause_summary.csv">查看效果量與統計結果</a></p>
+        <p><a href="figures/12_root_cause_summary.png">查看完整 Contributor Ranking</a> · <a href="results/root_cause_summary.csv">查看效果量與統計結果</a></p>
       </details>
     </section>
     <section id="window">
@@ -412,8 +412,8 @@ document.addEventListener('DOMContentLoaded', () => {
         <p>各配方分別依 Pressure、Temperature 分成低／中／高三組；只在至少 10 筆樣本的資料格中，以平均 Yield 減去 SD 選候選格。這是探索性排序，不是規格或信賴下限。</p>
         <p>RCP-A 候選觀測範圍：Pressure 7.965–8.072 Torr；Temperature 319.85–320.77 °C。範圍內仍可能有未取樣的組合。</p>
         <p>迴歸的 Pressure × Temperature 交互項 p = 2.6e-08。這表示資料中的關聯會隨另一個條件改變，不代表已驗證真實製程效應；正式 DOE 需要隨機化、重複試驗與設備分組。</p>
-        <figure class="figure-card"><img src="../figures/14_process_window.png" alt="Observed Pressure and Temperature process window by recipe" loading="lazy"><figcaption><p class="reading"><strong>Engineering Insight</strong>紅框是值得進一步測試的歷史資料區間，不能直接拿來修改量產配方。RCP-B 候選只有 10 筆，證據更有限。</p></figcaption></figure>
-        <p><a href="../figures/13_doe_heatmap.png">查看 Virtual DOE Heatmap</a> · <a href="../results/process_window_summary.csv">查看每格樣本數與波動</a></p>
+        <figure class="figure-card"><img src="figures/14_process_window.png" alt="Observed Pressure and Temperature process window by recipe" loading="lazy"><figcaption><p class="reading"><strong>Engineering Insight</strong>紅框是值得進一步測試的歷史資料區間，不能直接拿來修改量產配方。RCP-B 候選只有 10 筆，證據更有限。</p></figcaption></figure>
+        <p><a href="figures/13_doe_heatmap.png">查看 Virtual DOE Heatmap</a> · <a href="results/process_window_summary.csv">查看每格樣本數與波動</a></p>
       </details>
     </section>
     <section id="actions">
@@ -427,5 +427,5 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="interview-close"><h3>這份作品展現的判斷</h3><p>我能從批次資料定位問題，區分配方差異與設備波動，用多種證據排定調查順序，並清楚說明哪些結論已被資料支持、哪些還需要驗證。</p></div>
     </section>
   </main>
-  <footer class="wrap"><p>完整分析與原有圖表都保留，主頁以面試說明為主。</p><p><a href="technical_report.html">完整技術報告</a> · <a href="../README.md">README 與重跑方式</a> · <a href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">GitHub 原始碼</a></p></footer>
+  <footer class="wrap"><p>完整分析與原有圖表都保留，主頁以面試說明為主。</p><p><a href="docs/technical_report.html">完整技術報告</a> · <a href="README.md">README 與重跑方式</a> · <a href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">GitHub 原始碼</a></p></footer>
 </body></html>
