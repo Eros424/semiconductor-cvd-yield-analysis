@@ -3,353 +3,70 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A five-step CVD case study: detect a yield excursion, compare tools, investigate potential causes, plan validation and recommend engineering actions using 500 synthetic batches.">
-  <title>CVD Yield Excursion Investigation | Interview Portfolio</title>
-  <style>
-    :root {
-      color-scheme: light;
-      --paper: #ffffff;
-      --surface: #f7f9f7;
-      --ink: #202c2b;
-      --muted: #5d6966;
-      --rule: #d8ddd5;
-      --accent: #526b5e;
-    }
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    a { color: var(--accent); text-underline-offset: 3px; }
-    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-    .wrap { width: min(1160px, calc(100% - 48px)); margin: 0 auto; }
-    .site-nav { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 20px 0; font-size: .79rem; letter-spacing: .09em; text-transform: uppercase; }
-    .site-nav a { text-decoration: none; }
-    .site-nav .links { display: flex; flex-wrap: wrap; gap: 20px; }
-    .hero { background: var(--paper); color: var(--ink); padding: 68px 0 72px; border-bottom: 1px solid var(--rule); }
-    .hero .eyebrow { color: var(--accent); }
-    .eyebrow { margin: 0 0 12px; color: var(--accent); font-size: .76rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
-    h1, h2, h3, p { margin-top: 0; }
-    h1 { max-width: 900px; margin-bottom: 22px; font: 400 clamp(2.65rem, 6vw, 5.3rem)/1.04 Georgia, "Times New Roman", serif; letter-spacing: -.035em; }
-    h2 { margin-bottom: 20px; font: 400 clamp(2rem, 3.6vw, 3rem)/1.12 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
-    h3 { margin-bottom: 8px; font-size: 1.1rem; }
-    .hero-lede { max-width: 780px; color: var(--ink); font-size: 1.12rem; }
-    .hero-context { max-width: 780px; color: var(--muted); }
-    .hero-note { max-width: 780px; margin: 34px 0 0; padding-top: 18px; border-top: 1px solid var(--rule); color: var(--muted); font-size: .9rem; }
-    main section { padding: 70px 0; border-bottom: 1px solid var(--rule); }
-    .section-head { display: grid; grid-template-columns: 220px 1fr; gap: 28px; }
-    .section-head > .eyebrow { padding-top: 9px; }
-    .prose { max-width: 780px; }
-    .prose p, .prose li { color: var(--muted); }
-    .prose strong, .reading strong { color: var(--ink); }
-    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; margin-top: 34px; background: var(--rule); border: 1px solid var(--rule); }
-    .metric { padding: 25px 28px; background: var(--surface); }
-    .metric strong { display: block; font: 400 2.45rem/1 Georgia, "Times New Roman", serif; }
-    .metric span { display: block; margin-top: 8px; color: var(--muted); font-size: .86rem; }
-    .flow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 0; margin: 28px 0 0; list-style: none; }
-    .flow li { min-height: 128px; padding: 18px; background: var(--surface); border: 1px solid var(--rule); }
-    .flow .step { display: block; margin-bottom: 14px; color: var(--accent); font-size: .75rem; letter-spacing: .1em; }
-    .investigation-flow { max-width: 780px; padding: 0; margin: 28px 0 0; list-style: none; counter-reset: investigation; }
-    .investigation-flow li { position: relative; padding: 12px 20px 12px 68px; margin-bottom: 22px; border-left: 3px solid var(--accent); background: var(--surface); font-weight: 600; counter-increment: investigation; }
-    .investigation-flow li::before { content: counter(investigation, decimal-leading-zero); position: absolute; left: 20px; color: var(--accent); font-size: .78rem; letter-spacing: .08em; }
-    .investigation-flow li:not(:last-child)::after { content: "↓"; position: absolute; left: 28px; bottom: -26px; color: var(--accent); font-size: 1.2rem; }
-    .figure-card { margin: 28px 0 0; background: var(--surface); border: 1px solid var(--rule); }
-    #monitoring article + article { margin-top: 58px; }
-    .figure-card img { display: block; width: 100%; height: auto; }
-    .figure-card figcaption { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding: 24px 28px 28px; border-top: 1px solid var(--rule); }
-    .reading { margin: 0; color: var(--muted); font-size: .95rem; }
-    .reading strong { display: block; margin-bottom: 4px; font-size: .75rem; letter-spacing: .09em; text-transform: uppercase; }
-    .analysis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 28px; }
-    .analysis-grid > div { padding: 26px 28px; background: var(--surface); border: 1px solid var(--rule); }
-    .table-scroll { max-width: 100%; overflow-x: auto; }
-    .data-table { width: 100%; border-collapse: collapse; margin: 26px 0 12px; background: var(--surface); font-variant-numeric: tabular-nums; }
-    .data-table th, .data-table td { padding: 12px 14px; border-bottom: 1px solid var(--rule); text-align: left; }
-    .data-table th { color: var(--muted); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; }
-    .caveat { padding: 20px 24px; margin-top: 28px; border-left: 3px solid var(--accent); background: #e8ede7; color: #344b40; }
-    .skills { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 22px 0 0; list-style: none; }
-    .skills li { padding: 8px 14px; border: 1px solid var(--rule); background: var(--surface); }
-    footer { padding: 42px 0 52px; color: var(--muted); }
-    footer h2 { color: var(--ink); }
-    footer ol { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; padding-left: 20px; }
-    footer .source-link { margin-top: 34px; font-size: .88rem; }
-    @media (max-width: 850px) {
-      .section-head { display: block; }
-      .flow { grid-template-columns: repeat(2, 1fr); }
-      .site-nav { align-items: flex-start; flex-direction: column; }
-      footer ol { grid-template-columns: repeat(3, 1fr); }
-    }
-    @media (max-width: 600px) {
-      .wrap { width: min(100% - 32px, 1160px); }
-      .hero { padding: 52px 0 58px; }
-      main section { padding: 52px 0; }
-      .metrics, .analysis-grid, .figure-card figcaption { grid-template-columns: 1fr; }
-      .flow { grid-template-columns: 1fr; }
-      .data-table { min-width: 520px; }
-      .figure-card figcaption { padding: 20px; }
-      footer ol { grid-template-columns: 1fr; }
-    }
-  </style>
+  <meta name="description" content="Follow 500 simulated CVD batches through a five-part investigation: locate an excursion, compare tools, investigate pressure and plan validation.">
+  <title>CVD | Follow the Evidence — Process Engineering Portfolio</title>
+
 <style>
-      .hero { padding: 48px 0; }
-      h1 { font-family: Georgia, "Noto Serif TC", serif; font-size: clamp(2.3rem, 4.5vw, 4rem); line-height: 1.2; }
-      h2 { font-family: Georgia, "Noto Serif TC", serif; font-size: clamp(1.7rem, 3vw, 2.6rem); line-height: 1.3; }
-      .hero-lede { max-width: 720px; }
-      .flow a { text-decoration: none; font-weight: 600; }
-      .flow li { min-height: auto; }
-      .flow small { display: block; color: var(--muted); margin-top: 6px; font-weight: 400; }
-      .flow .step { margin-bottom: 8px; }
-      main section { padding: 52px 0; }
-      .prose { max-width: 850px; }
-      .explain { max-width: 850px; margin: 24px 0; padding-left: 20px; border-left: 3px solid var(--accent); }
-      .explain strong { display: block; color: var(--accent); font-size: .78rem; letter-spacing: .08em; margin-bottom: 6px; }
-      .explain p { margin-bottom: 0; }
-      details { max-width: 900px; margin-top: 24px; padding: 18px 22px; border: 1px solid var(--rule); background: var(--surface); }
-      summary { cursor: pointer; font-weight: 600; color: var(--accent); }
-      details[open] summary { margin-bottom: 16px; }
-      details p { color: var(--muted); }
-      .finding-list { max-width: 850px; padding-left: 22px; }
-      .finding-list li { margin-bottom: 16px; }
-      .figure-card figcaption { display: block; }
-      .metric strong { font-size: 2rem; }
-      .next-actions { max-width: 850px; padding-left: 22px; }
-      .next-actions li { padding-left: 8px; margin-bottom: 18px; }
-      .next-actions strong { display: block; }
-      .interview-close { background: var(--surface); padding: 26px; margin-top: 28px; max-width: 850px; }
-      footer { font-size: .9rem; }
-      @media(max-width:600px) { .hero { padding: 32px 0; } main section { padding: 38px 0; } .data-table { font-size: .82rem; } }
-    </style><style>:root { --paper:#f5f4ee; --surface:#eeeee7; --ink:#252923; --muted:#60665d; --rule:#d6d9cf; --accent:#4a6252; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Noto Sans TC", sans-serif; font-size:16px; line-height:1.75; }
-.wrap { width:min(1240px, calc(100% - 80px)); }
-.site-nav { padding:25px 0; font-size:14px; letter-spacing:.015em; text-transform:none; border-bottom:1px solid var(--rule); }
-.site-nav > a { color:var(--ink); font-weight:600; }
-.site-nav .links { gap:24px; align-items:center; }
-.site-nav .links a { padding:7px 0; transition:color .2s; }
-.site-nav .links a:last-child { border:1px solid #4a625233; border-radius:30px; padding:7px 16px; background:#ffffff4d; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); box-shadow:inset 0 1px 1px #ffffffcc; }
-.site-nav a:hover { color:var(--ink); }
-.hero {
- padding:62px 0 42px;
- background:radial-gradient(ellipse at 88% 22%,#91b09b45,transparent 39%),radial-gradient(ellipse at 60% 62%,#c0cbb649,transparent 34%),radial-gradient(ellipse at 76% 68%,#ffffffb3,transparent 28%);
-}
-.hero > .wrap { display:grid; grid-template-columns:1.12fr 1fr; grid-template-areas:"eyebrow art" "title art" "lede art" "metrics metrics" "note note"; column-gap:64px; }
-.hero .eyebrow { grid-area:eyebrow; align-self:end; margin-bottom:28px; }
-.eyebrow { font-size:12px; line-height:1.6; letter-spacing:.08em; font-weight:500; }
-h1,h2 { font-family:inherit; font-weight:500; letter-spacing:-.045em; }
-h1 { grid-area:title; font-size:clamp(36px,4.2vw,60px); line-height:1.2; margin-bottom:24px; max-width:650px; }
-h2 { font-size:clamp(27px,2.6vw,38px); line-height:1.35; max-width:820px; margin-bottom:24px; }
-h3 { font-weight:600; }
-.hero-lede { grid-area:lede; font-size:16px; max-width:530px; color:var(--muted); margin:0; }
-.hero > .wrap > .metrics { grid-area:metrics; margin-top:52px; }
-.hero-note { grid-area:note; max-width:890px; border:0; padding:0; margin:22px 0 0; font-size:13px; line-height:1.7; }
-.metrics { border:0; background:none; gap:32px; }
-.metric { border-top:1px solid var(--rule); padding:22px 0 0; background:none; }
-.metric strong { font-family:inherit; font-size:clamp(22px,2.5vw,34px); font-weight:500; letter-spacing:-.035em; line-height:1.3; }
-.metric span { font-size:13px; max-width:320px; margin-top:10px; }
-/* Clear glass circles retain the fine outline and the existing chapter navigation. */
-.flow { grid-area:art; display:grid; grid-template-columns:repeat(6,1fr); grid-template-rows:1fr 1fr; gap:24px 12px; margin:0; padding:26px 6px; min-height:340px; align-self:center; background:none; border:0; }
-.flow li { grid-column:span 2; padding:0; border:0; background:none; min-width:0; display:flex; justify-content:center; }
-.flow li:nth-child(4) { grid-column:2 / span 2; }
-.flow li:nth-child(5) { grid-column:4 / span 2; }
-.flow a { position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px; width:124px; height:124px; padding:20px 14px; text-align:center; color:var(--ink); text-decoration:none; font-weight:500; line-height:1.35; border-radius:50%; isolation:isolate; }
-.flow a::before { content:""; position:absolute; inset:0; border:1px solid #ffffffb3; border-radius:50%; z-index:-1;
- background:linear-gradient(135deg,#ffffff85 0%,#ffffff1a 48%,#ffffff40 100%);
- -webkit-backdrop-filter:blur(8px) saturate(115%); backdrop-filter:blur(8px) saturate(115%);
- box-shadow:inset 0 1px 1px #ffffffd9,inset 0 -1px 2px #4a625226,inset 0 0 0 1px #4a62521a,0 10px 24px -15px #364f3e59;
- transition:transform .4s cubic-bezier(.2,1.4,.45,1),box-shadow .3s,border-color .25s; }
-.flow a::after { content:"↗"; position:absolute; bottom:9px; font-size:19px; opacity:0; transform:translateY(4px); transition:opacity .25s,transform .25s; }
-.flow .step { margin:0; font-size:23px; font-weight:400; color:var(--accent); letter-spacing:-.03em; }
-.flow .action-label { display:block; max-width:102px; font-size:12px; font-weight:400; transition:transform .25s; }
-.flow a:hover::before,.flow a:focus::before { transform:translateY(-4px) scale(1.12); border-color:#fffffff2;
- background:linear-gradient(135deg,#ffffffad 0%,#ffffff1f 48%,#e3eee266 100%);
- box-shadow:inset 0 1px 2px #ffffffff,inset 0 -1px 2px #4a625233,inset 0 0 0 1px #4a625226,0 18px 32px -16px #364f3e66; }
-.flow a:hover::after,.flow a:focus::after { opacity:1; transform:none; }
-.flow a:hover .action-label,.flow a:focus .action-label { transform:translateY(-2px); }
-.flow a:focus-visible { outline:2px solid var(--accent); outline-offset:12px; }
-main section { position:relative; padding:72px 0 72px 230px; scroll-margin-top:24px; }
-main section > .eyebrow { position:absolute; top:80px; left:0; max-width:185px; }
-.prose,.explain,.finding-list,.next-actions,details,.interview-close { max-width:850px; }
-.prose,.finding-list,.next-actions { color:var(--muted); }
-.figure-card { border:0; background:#fff; margin:32px 0; }
-.figure-card img { padding:12px; }
-.figure-card figcaption { padding:22px 26px; border-top:1px solid var(--rule); background:var(--surface); }
-.reading { font-size:14px; }
-.reading strong { font-size:12px; font-weight:500; }
-.explain { padding:2px 0 2px 20px; border-left:2px solid var(--accent); margin:28px 0; font-size:15px; }
-.explain strong { font-size:12px; font-weight:500; }
-details { background:none; border:0; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); padding:19px 0; margin-top:28px; }
-summary { font-size:15px; font-weight:500; padding-right:24px; }
-details[open] { padding-bottom:24px; }
-.data-table { font-size:14px; background:none; }
-.data-table caption { text-align:left; color:var(--muted); font-size:13px; padding-bottom:14px; }
-.data-table th { font-size:12px; text-transform:none; letter-spacing:0; }
-.data-table th,.data-table td { padding:15px 12px; }
-.next-actions li { padding-left:12px; margin-bottom:26px; }
-.next-actions strong { color:var(--ink); font-weight:500; }
-.interview-close { padding:28px 30px; border-radius:3px; }
-.interview-close p { margin-bottom:0; color:var(--muted); }
-footer { font-size:13px; padding:32px 0 42px; }
-@media(max-width:1050px) {
- .hero > .wrap { column-gap:32px; grid-template-columns:1fr 1fr; }
- .flow { padding-inline:12px; }
- .site-nav .links { gap:14px; }
- main section { padding-left:190px; }
- main section > .eyebrow { max-width:160px; }
-}
-@media(max-width:760px) {
- .wrap { width:calc(100% - 40px); }
- .site-nav { flex-direction:column; align-items:flex-start; gap:10px; font-size:14px; }
- .site-nav .links { gap:8px 18px; }
- .hero { padding:36px 0; }
- .hero > .wrap { display:flex; flex-direction:column; gap:0; }
- .hero .eyebrow { align-self:flex-start; margin-bottom:20px; font-size:11px; }
- h1 { font-size:clamp(34px,6vw,48px); }
- .hero-lede { max-width:100%; }
- .flow { order:1; width:100%; margin-top:32px; }
- .hero > .wrap > .metrics { order:2; margin-top:30px; }
- .hero-note { order:3; }
- main section { padding:42px 0; }
- main section > .eyebrow { position:static; max-width:none; margin-bottom:18px; }
- h2 { font-size:28px; }
- .metrics { gap:20px; grid-template-columns:1fr; }
- .metric { padding-top:16px; }
- .metric strong { font-size:26px; }
- .metric span { max-width:none; }
- .figure-card img { padding:0; }
- .data-table { min-width:560px; }
-}
-@media(hover:none), (pointer:coarse) {
- .flow a::after { opacity:1; transform:none; }
-}
-.chapter-dialog { width:min(1120px,calc(100% - 64px)); max-height:calc(100dvh - 64px); padding:0; border:1px solid #ffffffe6; border-radius:12px; background:#f5f4eeeb; color:var(--ink); overflow-y:auto; overscroll-behavior:contain; box-shadow:inset 0 1px 1px #ffffffff,0 32px 100px #25292330;
- -webkit-backdrop-filter:blur(24px) saturate(110%); backdrop-filter:blur(24px) saturate(110%); }
-.chapter-dialog::backdrop { background:#25292340; -webkit-backdrop-filter:blur(5px); backdrop-filter:blur(5px); }
-.chapter-bar { display:flex; align-items:center; justify-content:space-between; gap:24px; position:sticky; top:0; z-index:2; padding:18px 32px; background:#f5f4eed9; -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px); border-bottom:1px solid #d6d9cf99; }
-.chapter-bar p { margin:0; font-size:14px; color:var(--accent); }
-.chapter-close { border:1px solid var(--rule); border-radius:30px; padding:9px 18px; background:none; color:var(--ink); font:inherit; font-size:14px; cursor:pointer; }
-.chapter-close:hover { background:var(--surface); }
-.chapter-close:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
-.chapter-dialog main.wrap { width:calc(100% - 64px); }
-.chapter-dialog main section { padding:38px 0; border:0; }
-.chapter-dialog main section > .eyebrow { position:static; max-width:none; margin-bottom:16px; }
-.chapter-dialog main section[hidden] { display:none; }
-.chapter-dialog .metrics { margin-top:26px; }
-.chapter-dialog[open] { animation:chapter-in .25s ease-out; }
-@keyframes chapter-in { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
-@media(max-width:1050px) { .flow a { width:110px; height:110px; padding:17px 10px; } .flow .action-label { font-size:11px; } }
-@media(max-width:760px) {
- .flow { min-height:310px; padding:16px 0; gap:28px 4px; }
- .flow a { width:100px; height:100px; padding:15px 10px; }
- .flow .step { font-size:21px; }
- .flow .action-label { font-size:11px; max-width:84px; }
- .flow a::after { bottom:5px; font-size:16px; }
- .hero > .wrap > .metrics { grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
- .hero > .wrap > .metrics .metric strong { font-size:23px; }
- .hero > .wrap > .metrics .metric span { font-size:12px; }
- .hero-note { font-size:12px; }
- .chapter-dialog { width:calc(100% - 20px); max-height:calc(100dvh - 20px); }
- .chapter-bar { padding:14px 18px; gap:12px; }
- .chapter-dialog main.wrap { width:calc(100% - 36px); }
- .chapter-dialog main section { padding-top:28px; }
-}
-@media(max-width:350px) { .flow a { width:86px; height:86px; } .flow .action-label { font-size:10px; } }
-@media(prefers-reduced-motion:reduce) {
- html { scroll-behavior:auto; }
- .flow a::before,.flow a::after,.flow .action-label { transition:none; }
- .flow a:hover::before,.flow a:focus::before { transform:none; }
- .chapter-dialog[open] { animation:none; }
-}
-</style><script>/* Keep the original chapter content readable when JavaScript is unavailable. */
-document.addEventListener('DOMContentLoaded', () => {
-  if (typeof HTMLDialogElement === 'undefined') return;
-  const main = document.querySelector('main');
-  const chapters = [...main.querySelectorAll(':scope > section[id]')];
-  const links = [...document.querySelectorAll('.flow a')];
-  const english = document.documentElement.lang === 'en';
-  const dialog = document.createElement('dialog');
-  dialog.className = 'chapter-dialog';
-  dialog.setAttribute('aria-labelledby', 'chapter-title');
-  const header = document.createElement('div');
-  header.className = 'chapter-bar';
-  const title = document.createElement('p');
-  title.id = 'chapter-title';
-  const close = document.createElement('button');
-  close.type = 'button';
-  close.className = 'chapter-close';
-  close.textContent = english ? 'Close ×' : '關閉 ×';
-  header.append(title, close);
-  main.before(dialog);
-  dialog.append(header, main);
-  links.forEach(link => {
-    link.setAttribute('aria-haspopup', 'dialog');
-    link.setAttribute('aria-controls', link.hash.slice(1));
-  });
-  let returnFocus;
-  function clearHash() {
-    if (chapters.some(chapter => '#' + chapter.id === location.hash)) {
-      history.replaceState(null, '', location.pathname + location.search);
-    }
-  }
-  function closeChapter() {
-    clearHash();
-    dialog.close();
-    returnFocus?.focus({ preventScroll: true });
-  }
-  function openChapter(hash, trigger, updateHistory = true) {
-    const chapter = chapters.find(item => '#' + item.id === hash);
-    if (!chapter) return false;
-    returnFocus = trigger || links.find(link => link.hash === hash);
-    chapters.forEach(item => { item.hidden = item !== chapter; });
-    const label = links.find(link => link.hash === hash);
-    title.textContent = label ? label.querySelector('.step').textContent + ' / ' + label.querySelector('.action-label').textContent : chapter.querySelector('h2').textContent;
-    if (!dialog.open) dialog.showModal();
-    dialog.scrollTop = 0;
-    close.focus({ preventScroll: true });
-    if (updateHistory && location.hash !== hash) history.pushState(null, '', hash);
-    return true;
-  }
-  document.addEventListener('click', event => {
-    const link = event.target.closest('a[href^="#"]');
-    if (link && openChapter(link.hash, link)) event.preventDefault();
-  });
-  close.addEventListener('click', closeChapter);
-  dialog.addEventListener('cancel', event => {
-    event.preventDefault();
-    closeChapter();
-  });
-  dialog.addEventListener('click', event => {
-    const bounds = dialog.getBoundingClientRect();
-    if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) closeChapter();
-  });
-  window.addEventListener('hashchange', () => {
-    if (!openChapter(location.hash, null, false) && dialog.open) closeChapter();
-  });
-  openChapter(location.hash, null, false);
-});
-</script></head>
+:root{--paper:#faf9f6;--ink:#202b38;--muted:#6c727a;--rule:#dfded9;--accent:#315eae;--surface:#f0eee8}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:100px}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.85 -apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif}a{color:var(--accent);text-underline-offset:5px}a:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:6px}img{max-width:100%}.wrap{width:min(1240px,calc(100% - 96px));margin:auto}p,h1,h2,h3{margin-top:0}.nav-shell{position:sticky;top:0;z-index:10;background:#faf9f6ed;backdrop-filter:blur(16px);border-bottom:1px solid #dfded980}.site-nav{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:20px 0;font-size:12px}.site-nav a{text-decoration:none}.brand{display:flex;gap:12px;align-items:center;color:var(--ink);letter-spacing:.07em}.brand svg{width:26px;height:26px}.site-nav .links{display:flex;align-items:center;gap:26px}.site-nav .links a{color:var(--muted)}.site-nav .links a:last-child{border:1px solid var(--rule);border-radius:30px;padding:6px 15px}.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--rule)}.hero-grid{position:relative;display:grid;grid-template-columns:1.18fr 1fr;min-height:680px;align-items:center;gap:20px}.hero-copy{position:relative;z-index:2;padding:65px 0 75px}.eyebrow{font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:26px}.hero h1{font-family:"Songti TC","Noto Serif TC",Georgia,serif;font-weight:400;font-size:clamp(40px,4.25vw,66px);line-height:1.4;letter-spacing:-.045em;margin-bottom:22px}.hero h1 em{font-weight:400;color:var(--accent);font-style:normal}.english-title{font:italic 25px/1.3 Georgia,serif;color:#94836b;margin-bottom:25px}.hero-lede{max-width:450px;font-size:15px;color:var(--muted);line-height:1.95}.hero-cta{display:inline-flex;align-items:center;gap:40px;margin-top:23px;padding:13px 24px;background:var(--accent);color:white;border-radius:40px;text-decoration:none;font-size:13px;transition:background .25s,transform .25s}.hero-cta:hover{background:#24477e;transform:translateY(-3px)}.hero-art{position:relative;align-self:stretch;display:flex;align-items:center;justify-content:center;pointer-events:none}.hero-art img{width:100%;max-height:680px;object-fit:contain;mix-blend-mode:multiply;will-change:transform}.art-label{position:absolute;bottom:30px;right:0;font:italic 13px Georgia,serif;color:#8a8176}.orbit{position:absolute;border:1px solid #a7a29824;border-radius:50%;width:750px;height:750px;right:-190px;top:-50px;pointer-events:none}.orbit:before,.orbit:after{content:"";position:absolute;inset:70px;border:1px solid #a7a29820;border-radius:50%}.orbit:after{inset:145px}.hero-bottom{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--rule);padding:27px 0;gap:35px}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:30px;margin:30px 0}.hero-bottom .metrics{margin:0;flex:1;max-width:720px}.metric strong{display:block;font:400 30px/1.3 Georgia,"Songti TC",serif;letter-spacing:-.02em}.metric span{display:block;font-size:11px;color:var(--muted);margin-top:7px}.hero-note{max-width:220px;font-size:11px;color:var(--muted);margin:0}.journey{padding:55px 0 35px}.journey-top{display:flex;justify-content:space-between;gap:20px}.journey-top .eyebrow{margin:0}.journey-top span{font:italic 17px Georgia,serif;color:#9a8a75}.flow{display:grid;grid-template-columns:repeat(5,1fr);list-style:none;padding:0;margin:24px 0 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}.flow li+li{border-left:1px solid var(--rule)}.flow a{display:grid;grid-template-columns:1fr auto;gap:16px;padding:24px 20px;text-decoration:none;color:var(--ink);transition:background .3s}.flow a:hover{background:#ece9e1}.flow .step{font:italic 17px Georgia,serif;color:#9c8970}.flow svg{width:22px;height:22px;color:#526782}.action-label{font-size:13px}.flow .arrow{font-size:17px;color:#8d8b84}main section{position:relative;padding:100px 0 100px 230px;border-bottom:1px solid var(--rule);scroll-margin-top:30px}main section>.eyebrow{position:absolute;left:0;top:110px;max-width:180px;line-height:1.9}h2{font:400 clamp(27px,2.6vw,40px)/1.5 "Songti TC","Noto Serif TC",Georgia,serif;letter-spacing:-.02em;margin-bottom:30px}h3{font-size:18px;font-weight:500}.prose,.finding-list,.next-actions{color:var(--muted)}strong{color:var(--ink)}.figure-card{margin:35px 0;background:#fff;border:1px solid var(--rule);border-radius:8px;overflow:hidden}.figure-card img{display:block;width:100%;height:auto;padding:14px}.figure-card figcaption{padding:23px 28px;background:#f3f1eb;border-top:1px solid var(--rule)}.reading{font-size:13px;color:var(--muted);margin:0}.reading strong,.explain strong{display:block;font-size:10px;letter-spacing:.1em;margin-bottom:8px}.explain{margin:32px 0;padding:4px 0 4px 24px;border-left:2px solid #9a8566}.explain p{font:400 18px/1.9 "Songti TC",Georgia,serif;margin:0}details{border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:20px 0;font-size:14px;color:var(--muted)}summary{cursor:pointer;color:var(--ink)}details[open] summary{margin-bottom:20px}.table-scroll{overflow-x:auto}.data-table{width:100%;border-collapse:collapse;font-size:13px;margin:25px 0}.data-table caption{text-align:left;color:var(--muted);margin-bottom:15px}.data-table th,.data-table td{padding:16px 12px;text-align:left;border-bottom:1px solid var(--rule)}.data-table th{font-weight:500}.finding-list li,.next-actions li{padding-left:8px;margin-bottom:15px}.next-actions strong{display:block}.interview-close{background:var(--surface);padding:30px;margin-top:35px;border-radius:6px}.interview-close p{margin-bottom:0;color:var(--muted)}footer{padding:40px 0;font-size:12px;color:var(--muted)}.reveal{opacity:1;transform:none}.motion-ready .reveal:not(.visible){opacity:0;transform:translateY(24px)}.motion-ready .reveal{transition:opacity .85s ease,transform .85s cubic-bezier(.2,.65,.3,1)}.reading-progress{position:fixed;left:0;top:0;height:2px;width:100%;transform:scaleX(0);transform-origin:left;background:#315eae;z-index:20}
+@media(min-width:1600px){.hero-grid{min-height:760px}.hero-art img{max-height:760px}}
+@media(max-width:1000px){.wrap{width:calc(100% - 56px)}.hero-grid{min-height:600px}.hero h1{font-size:44px}main section{padding-left:180px}main section>.eyebrow{max-width:145px}.site-nav .links{gap:14px}.flow a{padding:22px 12px}}
+@media(max-width:700px){html{scroll-padding-top:130px}.wrap{width:calc(100% - 40px)}.site-nav{flex-wrap:wrap;gap:12px;padding:14px 0}.site-nav .links{width:100%;justify-content:space-between;gap:8px;font-size:10px}.site-nav .links a:last-child{padding:4px 10px}.hero-grid{display:flex;flex-direction:column;gap:0;min-height:0}.hero-copy{padding:48px 0 0;width:100%}.hero h1{font-size:clamp(33px,8.5vw,48px)}.english-title{font-size:21px}.hero-lede{font-size:14px}.hero-art{height:380px;width:100%;margin-top:14px}.hero-art img{height:100%;width:auto}.art-label{bottom:5px;font-size:11px}.hero-bottom{display:block;padding:25px 0}.metrics{gap:16px}.hero-bottom .metric strong{font-size:29px}.hero-note{max-width:none;margin-top:20px;font-size:10px}.journey{padding-top:35px}.journey-top span{display:none}.flow{grid-template-columns:1fr}.flow li+li{border-left:0;border-top:1px solid var(--rule)}.flow a{display:flex;align-items:center;gap:20px;padding:14px 8px}.flow svg{width:19px;height:19px}.flow .arrow{margin-left:auto}.flow .step{width:22px}main section{padding:55px 0}main section>.eyebrow{position:static;max-width:none;margin-bottom:18px}h2{font-size:29px}.metric strong{font-size:22px}.data-table{min-width:520px}.figure-card img{padding:0}.figure-card figcaption{padding:18px}.explain p{font-size:17px}.orbit{right:-450px}footer{padding:30px 0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}.motion-ready .reveal:not(.visible){opacity:1;transform:none}.hero-art img{transform:none!important}}
+</style><style>
+/* Scroll story: native scrolling, with optional progressive focus. */
+.story-main{width:100%;margin:0}.story-main .story-chapter{padding:0;border:0;scroll-margin-top:0;--focus:1;--copy-scale:1;--symbol-scale:1;--veil:.74}
+.story-stage{position:relative}.story-scene{position:relative;min-height:740px;display:grid;place-items:center;isolation:isolate;overflow:hidden;background:#f5f2eb;border-top:1px solid var(--rule)}
+.story-backdrop{position:absolute;inset:-30px;z-index:-3;filter:none;transform:scale(1.05);pointer-events:none}.story-backdrop img{max-width:none;position:absolute;right:0;top:-18%;width:64%;height:140%;object-fit:cover;object-position:50% 40%;opacity:.68;mix-blend-mode:multiply}.story-chapter:nth-child(even) .story-backdrop img{right:auto;left:-7%;object-position:45% 65%}.story-orbit{position:absolute;width:1000px;height:1000px;left:-260px;top:-130px;border:1px solid #88775b66;border-radius:50%}.story-orbit:after{content:"";position:absolute;inset:110px;border:1px solid #88775b55;border-radius:50%}.story-veil{position:absolute;inset:0;background:var(--paper);opacity:var(--veil);z-index:-1;pointer-events:none}.story-content{width:min(880px,calc(100% - 64px));text-align:center;padding:55px 0 80px;transform:scale(var(--copy-scale));transform-origin:center;position:relative}.story-kicker{font-size:10px;color:#8c7d67;letter-spacing:.19em;margin-bottom:25px;display:flex;justify-content:center;gap:30px}.story-kicker span{color:var(--accent)}.story-symbol{width:70px;height:70px;display:grid;place-items:center;margin:0 auto 34px;color:var(--accent);transform:scale(var(--symbol-scale));border:1px solid #315eae30;border-radius:50%;background:#faf9f680}.story-symbol svg{width:32px;height:32px}.story-content h2{font-size:clamp(32px,4vw,58px);margin:0 0 20px;line-height:1.5}.story-line{font-size:17px;line-height:1.95;color:#5c6570;margin:0 auto 28px}.story-stat{margin:0}.story-stat strong{display:block;font:400 clamp(32px,4vw,50px)/1.3 Georgia,"Songti TC",serif;color:var(--accent)}.story-stat span{display:block;font-size:11px;color:var(--muted);margin-top:6px;letter-spacing:.04em}.story-takeaway{margin:25px 0 0;font:400 15px/1.7 "Songti TC",Georgia,serif;color:#8b785c}.story-scroll{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:25px;align-items:center;font-size:10px;letter-spacing:.08em;color:#7b807f}.story-evidence{max-width:100%;margin:0;border:0;border-bottom:1px solid var(--rule);padding:0;background:var(--paper)}.story-evidence>summary{display:flex;justify-content:space-between;align-items:center;gap:20px;width:min(880px,calc(100% - 56px));margin:auto;padding:22px 0;font-size:12px;list-style:none}.story-evidence>summary::-webkit-details-marker{display:none}.story-evidence>summary span{font-size:20px;color:var(--accent);transition:transform .2s}.story-evidence[open]>summary span{transform:rotate(45deg)}.story-evidence[open]>summary{margin-bottom:0}.story-evidence .evidence-body{width:min(880px,calc(100% - 56px));margin:auto;padding:24px 0 55px}.story-evidence[open]{padding-bottom:0}.evidence-body h3{font:400 27px/1.5 "Songti TC",Georgia,serif}.story-motion .story-stage{height:140svh;min-height:1050px}.story-motion .story-scene{position:sticky;top:76px;height:calc(100svh - 76px);min-height:640px}.story-motion .story-content{will-change:transform}
+@media(max-width:700px){.story-content{width:calc(100% - 36px);padding:35px 0 65px}.story-kicker{font-size:9px;margin-bottom:25px}.story-symbol{width:58px;height:58px;margin-bottom:26px}.story-symbol svg{width:28px;height:28px}.story-content h2{font-size:clamp(25px,6.5vw,38px);letter-spacing:-.045em}.story-line{font-size:13px;margin-bottom:25px}.story-stat strong{font-size:37px}.story-stat span{font-size:10px}.story-takeaway{font-size:13px;margin-top:24px}.story-backdrop img{width:110%;right:-28%;opacity:.6}.story-chapter:nth-child(even) .story-backdrop img{left:-25%}.story-motion .story-scene{top:127px;height:calc(100svh - 127px);min-height:570px}.story-motion .story-stage{height:135svh;min-height:900px}.story-scene{min-height:620px}.story-scroll{bottom:15px}.story-evidence>summary{font-size:11px}.story-kicker{gap:16px}}
+@media(max-height:740px){.story-motion .story-stage{height:auto;min-height:0}.story-motion .story-scene{position:relative;top:0;height:auto;min-height:620px}}
+@media(prefers-reduced-motion:reduce){.story-motion .story-stage{height:auto;min-height:0}.story-motion .story-scene{position:relative;top:0;height:auto}.story-content,.story-symbol{transform:none!important}.story-backdrop{filter:none!important}.story-veil{opacity:.74!important}}
+</style><style>
+.story-chapter:not(:first-child) .story-backdrop img{width:100%;height:100%;top:0;left:0;right:0;object-position:70% center;opacity:.85}
+.story-conclusion{position:relative;isolation:isolate;overflow:hidden;background:#f0ede5;padding:100px 28px;text-align:center;border-bottom:1px solid var(--rule)}
+.story-conclusion::before{content:"";position:absolute;inset:0;background:url('../images/portfolio/story-action.png') center/cover;opacity:.12;z-index:-1}
+.story-conclusion .eyebrow{margin-bottom:22px;color:#8b785c}.story-conclusion h2{max-width:850px;margin:0 auto 25px;font-size:clamp(28px,3.3vw,46px)}
+.story-conclusion p:not(.eyebrow){max-width:650px;margin:0 auto 20px;font-size:16px;line-height:2;color:#58616b}.story-conclusion strong{font-weight:500;color:var(--accent)}
+.story-conclusion .closing-line{padding-top:22px;border-top:1px solid #b5a68b66;font-family:"Songti TC",Georgia,serif;color:#847055!important;font-size:18px!important}
+@media(max-width:700px){.story-chapter:not(:first-child) .story-backdrop img{width:140%;left:-25%;object-position:75% center}.story-conclusion{padding:65px 25px}.story-conclusion p:not(.eyebrow){font-size:14px}.story-conclusion .closing-line{font-size:16px!important}}
+</style><style>
+.story-scroll{color:#4e617b;font-size:13px;text-decoration:none;border-bottom:1px solid #4e617b60;padding:6px 0;white-space:nowrap}.story-scroll:hover{color:var(--accent)}
+.story-evidence{background:#f2f0ea;border-top:1px solid #c5c8ca}
+.story-evidence>summary{padding:26px 0;min-height:100px;gap:16px}
+.story-evidence>summary .evidence-label{display:flex;flex-direction:column;gap:3px;color:var(--ink)}
+.story-evidence>summary .evidence-label small{font-size:11px;letter-spacing:.08em;color:var(--muted)}
+.story-evidence>summary .evidence-label strong{font-size:20px;font-weight:500;color:#354a65}
+.story-evidence>summary .evidence-affordance{display:flex;align-items:center;gap:13px}
+.story-evidence>summary .evidence-affordance>span{font-size:13px;color:#4e617b}
+.story-evidence>summary .evidence-plus{display:grid;place-items:center;width:34px;height:34px;border:1px solid #99a5b3;border-radius:50%;font-size:22px!important}
+.story-evidence[open]>summary span{transform:none}.story-evidence[open]>summary .evidence-plus{transform:rotate(45deg)}
+.story-evidence>summary .when-open,.story-evidence[open]>summary .when-closed{display:none}.story-evidence[open]>summary .when-open{display:inline}
+.story-evidence>summary:hover .evidence-label strong{text-decoration:underline;text-underline-offset:5px}
+@media(max-width:700px){.story-evidence>summary{width:calc(100% - 40px);padding:22px 0}.story-evidence>summary .evidence-label strong{font-size:18px}.story-evidence>summary .evidence-affordance{gap:8px}.story-evidence>summary .evidence-affordance>span{font-size:12px}.story-scroll{font-size:12px}}
+</style><style>
+html[lang=en] .story-content h2{font-family:Georgia,serif;font-size:clamp(30px,3.8vw,54px);line-height:1.25}html[lang=en] .hero h1{font-family:Georgia,serif;line-height:1.15}html[lang=en] .story-line{max-width:640px}html[lang=en] .site-nav .links{font-size:12px}
+@media(max-width:700px){html[lang=en] .story-content h2{font-size:32px}html[lang=en] .story-line{font-size:14px;line-height:1.8}html[lang=en] .story-line br{display:none}html[lang=en] .site-nav .links{font-size:10px}html[lang=en] .story-stat span{max-width:300px;margin:8px auto 0}html[lang=en] .story-evidence>summary .evidence-label strong{font-size:17px}}
+</style></head>
 <body>
-  <div class="wrap"><nav class="site-nav" aria-label="Primary navigation">
-    <a href="#">CVD / Process Engineering</a>
-    <div class="links"><a href="#case">Explore the Case</a><a href="#actions">Engineering Actions</a><a href="technical_report.html">Technical Report</a><a href="portfolio.html" lang="zh-Hant">中文版</a></div>
-  </nav></div>
-  <header class="hero"><div class="wrap">
-    <p class="eyebrow">Semiconductor Process Analysis / Interview Portfolio</p>
-    <h1>When yield drops,<br>how do I investigate?</h1>
-    <p class="hero-lede">From 500 simulated batches to focused engineering investigation.</p>
-    <div class="metrics" aria-label="Case summary">
-      <div class="metric"><strong>500</strong><span>Simulated batches</span></div>
-      <div class="metric"><strong>3</strong><span>CVD tools</span></div>
-      <div class="metric"><strong>7.05</strong><span>Same-day yield gap (pp)</span></div>
-    </div>
-    <p class="hero-note">Simulated data. Equipment causes and improvements require field validation.</p>
-    <ol class="flow" aria-label="Five-step analysis workflow">
-      <li><a href="#case"><span class="step">01</span><span class="action-label">Detect excursion</span></a></li>
-      <li><a href="#tools"><span class="step">02</span><span class="action-label">Compare tools</span></a></li>
-      <li><a href="#cause"><span class="step">03</span><span class="action-label">Investigate causes</span></a></li>
-      <li><a href="#window"><span class="step">04</span><span class="action-label">Plan validation</span></a></li>
-      <li><a href="#actions"><span class="step">05</span><span class="action-label">Engineering actions</span></a></li>
-    </ol>
-  </div></header>
-  <main class="wrap">
-    <section id="case">
-      <p class="eyebrow">01 / Excursion Detection &amp; SPC</p>
-      <h2>Locate the time window, then compare the signals.</h2>
+<div class="reading-progress" aria-hidden="true"></div>
+<div class="nav-shell"><nav class="site-nav wrap" aria-label="Primary navigation"><a class="brand" href="#top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></svg><span>CVD / ENGINEERING</span></a><div class="links"><a href="#case">Explore the case</a><a href="#actions">Engineering actions</a><a href="technical_report.html">Technical report ↗</a><a href="portfolio.html" lang="zh-Hant">中文版</a></div></nav></div>
+<header class="hero" id="top"><div class="orbit" aria-hidden="true"></div><div class="wrap"><div class="hero-grid"><div class="hero-copy"><p class="eyebrow">A STUDY IN PROCESS & PRECISION · 01</p><h1>Follow the signals.<br>Find <em>the story.</em></h1><p class="english-title">The art of asking why.</p><p class="hero-lede">When yield drops, where do I start?<br>Follow 500 simulated CVD batches through the signals, tools and process conditions that inform an engineering investigation.</p><a class="hero-cta" href="#case">Explore the story <span aria-hidden="true">↓</span></a></div><div class="hero-art"><img src="../images/portfolio/classical-scholar.png" width="1086" height="1448" alt="A fresco-style scholar studies geometric drawings, reflecting observation, reasoning and validation" fetchpriority="high"><span class="art-label">Observation. Reasoning. Discovery.</span></div></div><div class="hero-bottom"><div class="metrics" aria-label="Case summary"><div class="metric"><strong>500</strong><span>Simulated batches</span></div><div class="metric"><strong>3</strong><span>CVD tools</span></div><div class="metric"><strong>7.05</strong><span>Same-day yield gap (pp)</span></div></div><p class="hero-note">Simulated data.<br>Causes and improvements require field validation.</p></div></div></header><div class="journey wrap"><div class="journey-top"><p class="eyebrow">THE INVESTIGATION / FIVE CHAPTERS</p><span>Follow the evidence.</span></div><ol class="flow" aria-label="Five-step investigation"><li><a href="#case"><span class="step">01</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg><span class="action-label">Detect</span><span class="arrow" aria-hidden="true">↗</span></a></li><li><a href="#tools"><span class="step">02</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/></svg><span class="action-label">Compare</span><span class="arrow" aria-hidden="true">↗</span></a></li><li><a href="#cause"><span class="step">03</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg><span class="action-label">Investigate</span><span class="arrow" aria-hidden="true">↗</span></a></li><li><a href="#window"><span class="step">04</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 8 0M10 3v6L4 20h16L14 9V3M7 15h10"/></svg><span class="action-label">Validate</span><span class="arrow" aria-hidden="true">↗</span></a></li><li><a href="#actions"><span class="step">05</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6M4 21h16"/></svg><span class="action-label">Act</span><span class="arrow" aria-hidden="true">↗</span></a></li></ol></div>
+  <main class="story-main">
+    <section id="case" class="story-chapter" aria-labelledby="story-title-case">
+ <div class="story-stage"><div class="story-scene">
+  <div class="story-backdrop" aria-hidden="true"><img src="../images/portfolio/classical-scholar.png" alt="" width="1086" height="1448"><div class="story-orbit"></div></div>
+  <div class="story-veil" aria-hidden="true"></div>
+  <div class="story-content"><p class="story-kicker">THE INVESTIGATION <span>01 / 05</span></p>
+   <div class="story-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg></div>
+   <h2 id="story-title-case">Where did it begin?</h2><p class="story-line">One tool. One time window.<br>The investigation starts with a timeline.</p>
+   <p class="story-stat"><strong>7 batches</strong><span>Consecutive low-yield batches</span></p>
+   <p class="story-takeaway">Find the time window. Then follow the clues.</p>
+  </div>
+  <a class="story-scroll" href="#evidence-01"><span>Explore the evidence for this step</span><span aria-hidden="true">↓</span></a>
+ </div></div>
+ <details class="story-evidence" id="evidence-01"><summary><span class="evidence-label"><small>01 / BEHIND THIS STEP</small><strong>View data & analysis</strong></span><span class="evidence-affordance"><span class="when-closed">Read more</span><span class="when-open">Show less</span><span class="evidence-plus" aria-hidden="true">＋</span></span></summary><div class="evidence-body">
+
+      <h3>Locate the time window, then compare the signals.</h3>
       <p class="prose">I first check batch records, timestamps and missing values, then flag yield below 95% for review. On January 10, 2026, CVD-02 has 7 consecutive low-yield batches, prompting a closer look at process conditions in the same window.</p>
       <div class="metrics">
         <div class="metric"><strong>14:18–19:42</strong><span>First through last observed low-yield batch</span></div>
@@ -365,10 +82,23 @@ document.addEventListener('DOMContentLoaded', () => {
         <p>I establish separate baselines for each Tool × Recipe, estimate limits from the first chronological 60% of its records and freeze those limits for later observations. Signals also occur within the baseline, so these limits support retrospective screening and still need production baseline qualification.</p>
         <p><a href="../figures/06_spc_pressure.png">Pressure I-MR Chart</a> · <a href="../results/spc_excursions.csv">Excursion Batch Table</a> · <a href="../figures/10_cvd02_excursion_case.png">Full Six-Parameter Timeline</a></p>
       </details>
-    </section>
-    <section id="tools">
-      <p class="eyebrow">02 / Tool Health</p>
-      <h2>Compare failure frequency and variability.</h2>
+    </div></details>
+</section>
+    <section id="tools" class="story-chapter" aria-labelledby="story-title-tools">
+ <div class="story-stage"><div class="story-scene">
+  <div class="story-backdrop" aria-hidden="true"><img src="../images/portfolio/story-instruments.png" alt="" width="1536" height="1024" loading="lazy" decoding="async"><div class="story-orbit"></div></div>
+  <div class="story-veil" aria-hidden="true"></div>
+  <div class="story-content"><p class="story-kicker">THE INVESTIGATION <span>02 / 05</span></p>
+   <div class="story-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M15 4v16M4 9h16M4 15h16"/></svg></div>
+   <h2 id="story-title-tools">The average misses part of the story.</h2><p class="story-line">Three tools have similar average yield.<br>Failure frequency reveals where to look first.</p>
+   <p class="story-stat"><strong>18.8%</strong><span>Low-yield rate on CVD-02</span></p>
+   <p class="story-takeaway">Compare the tools. Compare their variation.</p>
+  </div>
+  <a class="story-scroll" href="#evidence-02"><span>Explore the evidence for this step</span><span aria-hidden="true">↓</span></a>
+ </div></div>
+ <details class="story-evidence" id="evidence-02"><summary><span class="evidence-label"><small>02 / BEHIND THIS STEP</small><strong>View data & analysis</strong></span><span class="evidence-affordance"><span class="when-closed">Read more</span><span class="when-open">Show less</span><span class="evidence-plus" aria-hidden="true">＋</span></span></summary><div class="evidence-body">
+
+      <h3>Compare failure frequency and variability.</h3>
       <p class="prose">The three tools have similar average yield. I also compare low-yield rates and variability, subtracting each recipe's mean before calculating variability to reduce recipe-mix effects. Standard deviation (SD) describes the spread: a higher value means greater batch-to-batch variation.</p>
       <div class="table-scroll"><table class="data-table"><caption>Variability after centering each tool's observations by recipe mean</caption>
         <thead><tr><th>Tool</th><th>Batches</th><th>Low-yield Rate</th><th>Yield SD<br>percentage points</th><th>Pressure SD<br>Torr</th></tr></thead><tbody><tr><th scope="row">CVD-01</th><td>160</td><td>11.2%</td><td>2.00</td><td>0.257</td></tr>
@@ -385,10 +115,23 @@ document.addEventListener('DOMContentLoaded', () => {
         <p>The two recipes target film thicknesses of 100 nm and 105 nm. Pooling them can make a legitimate recipe change look like tool drift. Centering by recipe mean reduces that effect, but it cannot remove every confounding factor.</p>
         <p><a href="../figures/11_tool_health_comparison.png">Full Tool Health Comparison</a> · <a href="../results/tool_health_summary.csv">All Tool Health Metrics</a></p>
       </details>
-    </section>
-    <section id="cause">
-      <p class="eyebrow">03 / Potential Root Cause</p>
-      <h2>Defects rank first. Why investigate pressure first?</h2>
+    </div></details>
+</section>
+    <section id="cause" class="story-chapter" aria-labelledby="story-title-cause">
+ <div class="story-stage"><div class="story-scene">
+  <div class="story-backdrop" aria-hidden="true"><img src="../images/portfolio/story-pressure.png" alt="" width="1536" height="1024" loading="lazy" decoding="async"><div class="story-orbit"></div></div>
+  <div class="story-veil" aria-hidden="true"></div>
+  <div class="story-content"><p class="story-kicker">THE INVESTIGATION <span>03 / 05</span></p>
+   <div class="story-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></div>
+   <h2 id="story-title-cause">The clues point to pressure.</h2><p class="story-line">Defects correlate most strongly with yield.<br>But pressure shifts at onset, making its records a priority.</p>
+   <p class="story-stat"><strong>Pressure</strong><span>The process variable to investigate first</span></p>
+   <p class="story-takeaway">Moving together is a clue, not proof of causation.</p>
+  </div>
+  <a class="story-scroll" href="#evidence-03"><span>Explore the evidence for this step</span><span aria-hidden="true">↓</span></a>
+ </div></div>
+ <details class="story-evidence" id="evidence-03"><summary><span class="evidence-label"><small>03 / BEHIND THIS STEP</small><strong>View data & analysis</strong></span><span class="evidence-affordance"><span class="when-closed">Read more</span><span class="when-open">Show less</span><span class="evidence-plus" aria-hidden="true">＋</span></span></summary><div class="evidence-body">
+
+      <h3>Defects rank first. Why investigate pressure first?</h3>
       <p class="prose">I combine correlations with yield, group differences and effect sizes, then account for Tool, Recipe and time to prioritize potential contributors. The top three across the dataset are:</p>
       <ol class="finding-list">
         <li><strong>Defect Count:</strong> The strongest association with yield (r = -0.64), but defects may be an outcome of a process problem rather than an equipment cause.</li>
@@ -401,10 +144,23 @@ document.addEventListener('DOMContentLoaded', () => {
         <p>Equipment maintenance data is not available, therefore these are engineering hypotheses rather than confirmed hardware root causes.</p>
         <p><a href="../figures/12_root_cause_summary.png">Full Contributor Ranking</a> · <a href="../results/root_cause_summary.csv">Effect Sizes and Statistical Results</a></p>
       </details>
-    </section>
-    <section id="window">
-      <p class="eyebrow">04 / Virtual DOE &amp; Process Window</p>
-      <h2>Use the evidence to plan validation.</h2>
+    </div></details>
+</section>
+    <section id="window" class="story-chapter" aria-labelledby="story-title-window">
+ <div class="story-stage"><div class="story-scene">
+  <div class="story-backdrop" aria-hidden="true"><img src="../images/portfolio/story-experiment.png" alt="" width="1536" height="1024" loading="lazy" decoding="async"><div class="story-orbit"></div></div>
+  <div class="story-veil" aria-hidden="true"></div>
+  <div class="story-content"><p class="story-kicker">THE INVESTIGATION <span>04 / 05</span></p>
+   <div class="story-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 3 8 0M10 3v6L4 20h16L14 9V3M7 15h10"/></svg></div>
+   <h2 id="story-title-window">A lead still needs a test.</h2><p class="story-line">One set of historical conditions performs well.<br>The next step is an experiment to test repeatability.</p>
+   <p class="story-stat"><strong>47 batches</strong><span>Batches in the RCP-A candidate cell</span></p>
+   <p class="story-takeaway">Candidate conditions are not production specifications.</p>
+  </div>
+  <a class="story-scroll" href="#evidence-04"><span>Explore the evidence for this step</span><span aria-hidden="true">↓</span></a>
+ </div></div>
+ <details class="story-evidence" id="evidence-04"><summary><span class="evidence-label"><small>04 / BEHIND THIS STEP</small><strong>View data & analysis</strong></span><span class="evidence-affordance"><span class="when-closed">Read more</span><span class="when-open">Show less</span><span class="evidence-plus" aria-hidden="true">＋</span></span></summary><div class="evidence-body">
+
+      <h3>Use the evidence to plan validation.</h3>
       <p class="prose">I examine Pressure and Temperature together to identify historical conditions with higher and more stable yield. This is <strong>Virtual DOE / Observational Analysis</strong>; no randomized wafer experiment was performed.</p>
       <p class="prose">The RCP-A candidate cell contains 47 batches, with mean yield of 97.66% and SD of 0.79 percentage points. It helps select conditions for testing, but is not a qualified process window.</p>
       <div class="explain"><strong>How I would explain it</strong><p>“Historical data helps me choose conditions worth testing in a formal DOE. I check sample size and variation alongside average yield, because a small high-yield group may simply be lucky.”</p></div>
@@ -415,17 +171,70 @@ document.addEventListener('DOMContentLoaded', () => {
         <figure class="figure-card"><img src="../figures/14_process_window.png" alt="Observed Pressure and Temperature process window by recipe" loading="lazy"><figcaption><p class="reading"><strong>Engineering Insight</strong>The red rectangles identify historical conditions worth testing. They cannot directly justify a production recipe change. The RCP-B candidate has only 10 batches, so its evidence is more limited.</p></figcaption></figure>
         <p><a href="../figures/13_doe_heatmap.png">Virtual DOE Heatmap</a> · <a href="../results/process_window_summary.csv">Cell Sample Sizes and Variability</a></p>
       </details>
-    </section>
-    <section id="actions">
-      <p class="eyebrow">05 / Engineering Recommendations</p>
-      <h2>Turn the findings into three practical actions.</h2>
+    </div></details>
+</section>
+    <section id="actions" class="story-chapter" aria-labelledby="story-title-actions">
+ <div class="story-stage"><div class="story-scene">
+  <div class="story-backdrop" aria-hidden="true"><img src="../images/portfolio/story-action.png" alt="" width="1536" height="1024" loading="lazy" decoding="async"><div class="story-orbit"></div></div>
+  <div class="story-veil" aria-hidden="true"></div>
+  <div class="story-content"><p class="story-kicker">THE INVESTIGATION <span>05 / 05</span></p>
+   <div class="story-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6M4 21h16"/></svg></div>
+   <h2 id="story-title-actions">Turn evidence into action.</h2><p class="story-line">Define the next engineering steps.<br>Be clear about what is supported and what needs validation.</p>
+   <p class="story-stat"><strong>3 actions</strong><span>Review signals · Check pressure · Plan experiments</span></p>
+   <p class="story-takeaway">Observe → Reason → Validate.</p>
+  </div>
+  <a class="story-scroll" href="#evidence-05"><span>Explore the evidence for this step</span><span aria-hidden="true">↓</span></a>
+ </div></div>
+ <details class="story-evidence" id="evidence-05"><summary><span class="evidence-label"><small>05 / BEHIND THIS STEP</small><strong>View data & analysis</strong></span><span class="evidence-affordance"><span class="when-closed">Read more</span><span class="when-open">Show less</span><span class="evidence-plus" aria-hidden="true">＋</span></span></summary><div class="evidence-body">
+
+      <h3>Turn the findings into three practical actions.</h3>
       <ol class="next-actions">
         <li><strong>Flag batches for engineering review.</strong>Review yield below 95% or SPC signals against the same tool and recipe baseline. Hold/release decisions require approved specifications and authorization.</li>
         <li><strong>Review pressure-related records first.</strong>Compare recipes, setpoints, actual readings and tool logs before and during the excursion. Repeated pressure shifts within the same recipe would support an equipment inspection and maintenance request.</li>
         <li><strong>Validate candidate conditions experimentally.</strong>Plan a Pressure × Temperature DOE, keep other conditions fixed and block by tool. Evaluate yield, film quality and defects together.</li>
       </ol>
       <div class="interview-close"><h3>The engineering judgment this project demonstrates</h3><p>I can locate a problem in batch records, separate recipe differences from tool variation, combine evidence to prioritize an investigation and explain which conclusions the data supports and which still need validation.</p></div>
-    </section>
+    </div></details>
+</section>
   </main>
-  <footer class="wrap"><p>The interview page presents the main story. Full analysis and original charts remain available.</p><p><a href="portfolio.html" lang="zh-Hant">中文版</a> · <a href="technical_report.html">Full Technical Report</a> · <a href="../README.md">README and Reproduction Instructions</a> · <a href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">GitHub Source</a></p></footer>
-</body></html>
+<aside class="story-conclusion" aria-labelledby="conclusion-title">
+ <p class="eyebrow">CONCLUSION</p>
+ <h2 id="conclusion-title">From an excursion to an informed decision.</h2>
+ <p>Across 500 simulated batches, this analysis locates an excursion, compares tools and process conditions, and identifies <strong>pressure as a priority for investigation</strong>, along with candidate conditions worth testing.</p>
+ <p>The evidence supports an investigation order. Equipment records and formal experiments are still needed to establish causes and verify improvements.</p>
+ <p class="closing-line">Use data to narrow the question. Use validation to confirm the answer.</p>
+</aside>
+
+  <footer class="wrap"><p>Explore the full analysis and original charts for the complete technical detail.</p><p><a href="technical_report.html">Full technical report</a> · <a href="../README.md">README & reproduction</a> · <a href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">GitHub source</a></p></footer>
+<script>
+(() => {
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ const chapters=[...document.querySelectorAll('.story-chapter')];
+ const bar=document.querySelector('.reading-progress');
+ const clamp=(v,min=0,max=1)=>Math.max(min,Math.min(max,v));
+ let scheduled=false;
+ function paint(){
+  scheduled=false;
+  const vh=innerHeight,max=document.documentElement.scrollHeight-vh;
+  bar.style.transform=`scaleX(${max>0?clamp(scrollY/max):0})`;
+  for(const chapter of chapters){
+   const stage=chapter.querySelector('.story-stage'),rect=stage.getBoundingClientRect();
+   if(rect.bottom<0||rect.top>vh)continue;
+   const focus=reduced.matches?1:clamp((vh*.82-rect.top)/(vh*.68));
+   chapter.style.setProperty('--focus',focus.toFixed(3));
+   chapter.style.setProperty('--copy-scale',(0.88+focus*.12).toFixed(3));
+   chapter.style.setProperty('--symbol-scale',(0.82+focus*.38).toFixed(3));
+   chapter.style.setProperty('--veil',(0.54+focus*.20).toFixed(3));
+  }
+ }
+ function schedule(){if(!scheduled){scheduled=true;requestAnimationFrame(paint);}}
+ function setup(){document.documentElement.classList.toggle('story-motion',!reduced.matches);paint();}
+ addEventListener('scroll',paint,{passive:true});addEventListener('resize',schedule);
+ if ('ResizeObserver' in window) {
+  const layoutObserver=new ResizeObserver(schedule);
+  chapters.forEach(chapter=>layoutObserver.observe(chapter));
+ }
+ document.querySelectorAll('details').forEach(el=>el.addEventListener('toggle',schedule));
+ reduced.addEventListener('change',setup);setup();
+})();
+</script></body></html>
