@@ -21,4 +21,3 @@ Use case: stylized-concept. Wide 16:9 cinematic photographic concept image for a
 ### Vacuum
 
 Use case: stylized-concept. Wide 16:9 premium industrial photographic concept, consistent dark graphite and cool white light with a faint warm metal rim. Macro view of generic semiconductor vacuum-system components: a machined stainless-steel valve assembly, a pressure gauge with an unmarked face, clean metal tubing and connectors. Diagonal lines across the right two thirds, dramatic quiet negative space at left, shallow optical depth of field in distant background, tactile precision engineering, grounded physically plausible hardware. No logos, text, numbers, readouts, people, glowing effects, smoke or sci-fi props. The image is an original AI concept for a process-analysis portfolio, not this project's actual equipment or an established root cause.
-
