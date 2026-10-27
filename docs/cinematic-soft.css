@@ -1,0 +1,60 @@
+@import url('cinematic.css');
+/* B only: matte depth around expansion, with crisp source evidence. */
+.focus-backdrop { background: #111913ad; backdrop-filter: blur(14px) saturate(.65); -webkit-backdrop-filter: blur(14px) saturate(.65); }
+.transition-stage::before { content: ''; position: absolute; inset: -30px; background: var(--matte-image) center/cover; filter: blur(22px) saturate(.7); opacity: .25; transform: scale(1.08); }
+/* Restore the approved accordion treatment while an inline alternative is explored. */
+.story-evidence>summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 115px; width: min(1200px,100%); margin: auto; cursor: pointer; }
+.story-evidence>summary::-webkit-details-marker { display: none; }
+.evidence-affordance { display: flex; align-items: center; gap: 18px; font-size: 12px; }
+.evidence-plus { font-size: 27px; font-weight: 300; }
+.story-evidence>summary:hover .evidence-label strong { text-decoration: underline; text-underline-offset: 7px; }
+.story-evidence .when-open,.story-evidence[open] .when-closed { display: none; }
+.story-evidence[open] .when-open { display: inline; }
+.story-evidence[open] .evidence-plus { transform: rotate(45deg); }
+.evidence-body { padding-top: 30px; }
+.evidence-body details { margin: 30px 0; border-top: 1px solid #68786166; border-bottom: 1px solid #68786166; padding: 20px 0; font-size: 15px; }
+.evidence-body details>summary { cursor: pointer; min-height: 44px; display: list-item; align-content: center; }
+.evidence-body details[open]>summary { margin-bottom: 16px; }
+@media(max-width:600px) {
+ .focus-backdrop { backdrop-filter: blur(9px) saturate(.7); -webkit-backdrop-filter: blur(9px) saturate(.7); }
+ .transition-stage::before { filter: blur(16px) saturate(.7); }
+ .story-evidence>summary { min-height: 105px; gap: 15px; }
+ .evidence-affordance { gap: 10px; font-size: 11px; white-space: nowrap; }
+ .evidence-plus { font-size: 24px; }
+ .evidence-body { padding-top: 24px; }
+}
+/* A clear focal photograph, with the soft matte confined behind its aperture. */
+.transition-out { display: none; }
+.transition-in { opacity: 1; clip-path: none; }
+[data-direction=vertical] .transition-in { clip-path: none; }
+@media(max-width:600px) {
+ [data-transition-index='0'] .transition-in img { object-position: 70% center; }
+ [data-transition-index='1'] .transition-in img { object-position: 55% center; }
+ [data-transition-index='2'] .transition-in img { object-position: 58% center; }
+ [data-transition-index='3'] .transition-in img { object-position: 60% center; }
+}
+
+/* Give the opening words a complete beat before the scene moves away.
+   Sticky only adds scroll distance: wheel, touch, anchors and keys stay native. */
+.motion-enabled .hero-runway { height: 175svh; }
+.motion-enabled .hero-runway .hero { position: sticky; top: 0; min-height: 100svh; }
+.motion-enabled .hero-runway .hero-photo { animation: none; }
+@media (max-width: 700px) {
+ .motion-enabled .hero-runway { height: 155svh; }
+}
+@media (prefers-reduced-motion: reduce) {
+ .hero-runway { height: auto; }
+ .hero-runway .hero { position: relative; }
+}
+
+/* Scroll-scrubbed silver-white sweep; stopping/reversing scroll stops/reverses light. */
+.type-glint { display: none; }
+.motion-enabled .hero .type-glint {
+ display: inline; grid-area: glyph; color: #fff; opacity: 0;
+ pointer-events: none; user-select: none;
+ text-shadow: 0 0 8px #ffffff60;
+ opacity: clamp(0,min(calc((var(--hero-sweep-progress,0) - var(--glint-start)) * 12),calc((var(--glint-end) - var(--hero-sweep-progress,0)) * 12)),1);
+}
+@media (prefers-reduced-motion: reduce) {
+ .hero .type-glint { display: none!important; animation: none!important; }
+}
