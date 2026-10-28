@@ -84,3 +84,48 @@
  .hero-metric>p { font-size: 14px; margin-top: 9px; }
  .hero-metric .unit { font-size: 13px; }
 }
+
+/* One central analysis invitation per scene; native anchors keep reading optional. */
+.story-analysis-link {
+ grid-column: 1 / -1; justify-self: center; align-self: end;
+ display: flex; width: fit-content; max-width: 100%; margin: 18px auto 0;
+ padding: 8px 12px; gap: 16px; min-height: 60px;
+ border: 0; overflow: visible; font-size: 14px; color: var(--paper);
+}
+.story-analysis-link::after { display: none; }
+.analysis-icon {
+ position: relative; isolation: isolate; flex: 0 0 44px;
+ width: 44px; height: 44px; display: grid; place-items: center;
+ border: 1px solid #cdd2be80; border-radius: 50%;
+ transition: color var(--duration-micro) var(--ease-premium);
+}
+.analysis-icon::before,.analysis-icon::after {
+ content: ''; position: absolute; inset: 0; border-radius: inherit; z-index: -1;
+ transition: transform var(--duration-micro) var(--ease-premium),opacity var(--duration-micro) var(--ease-premium);
+}
+.analysis-icon::before { background: var(--accent); transform: scale(.5); opacity: 0; }
+.analysis-icon::after { border: 1px solid var(--accent); opacity: 0; transform: scale(1); }
+.analysis-icon svg { width: 20px; height: 20px; transition: transform var(--duration-micro) var(--ease-premium); }
+.story-analysis-link:focus-visible .analysis-icon,.story-analysis-link:active .analysis-icon { color: var(--ink); }
+.story-analysis-link:focus-visible .analysis-icon::before,.story-analysis-link:active .analysis-icon::before { opacity: 1; transform: scale(1); }
+.story-analysis-link:focus-visible .analysis-icon::after { opacity: .6; transform: scale(1.18); }
+.story-analysis-link:focus-visible .analysis-icon svg { transform: translateX(2px); }
+@media (hover: hover) and (pointer: fine) {
+ .story-analysis-link:hover .analysis-icon { color: var(--ink); }
+ .story-analysis-link:hover .analysis-icon::before { opacity: 1; transform: scale(1); }
+ .story-analysis-link:hover .analysis-icon::after { opacity: .6; transform: scale(1.18); }
+ .story-analysis-link:hover .analysis-icon svg { transform: translateX(2px); }
+}
+@media (max-width: 1000px) {
+ .story-analysis-link { margin-top: 30px; }
+ .story-scene { padding-bottom: 90px; }
+}
+@media (prefers-reduced-motion: reduce) {
+ .analysis-icon::after { display: none; }
+ .analysis-icon svg { transform: none!important; }
+}
+
+/* Let a short laptop scene grow to keep the centered invitation below evidence. */
+@media (min-width: 1001px) and (min-height: 650px) {
+ .motion-enabled .story-scene { height: auto; min-height: calc(100svh - var(--nav-height)); }
+}
