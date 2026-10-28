@@ -58,12 +58,16 @@
  function playTwist(control,down){
   const tracks=[...control.querySelectorAll('.roll-track')];
   const from=tracks.map(track=>getComputedStyle(track).transform);
+  const positions=tracks.map((track,index)=>({index,rect:track.parentElement.getBoundingClientRect()}));
   stopTwist(control);
   const target=down&&!reduced.matches?'translateY(100%)':'translateY(0%)';
   tracks.forEach(track=>track.style.transform=target);
   if(reduced.matches)return;
-  const stagger=down?0:Math.min(25,180/Math.max(1,tracks.length-1));
-  const flights=tracks.map((track,index)=>track.animate([{transform:from[index]},{transform:target}],{duration:650,delay:index*stagger,easing:'linear',fill:'both'}));
+  // Horizontal labels run right-to-left; the selected vertical A reads top-to-bottom.
+  const order=control.matches('.back-to-top')?positions:positions.sort((a,b)=>Math.abs(a.rect.top-b.rect.top)>4?a.rect.top-b.rect.top:b.rect.left-a.rect.left);
+  const rank=new Map(order.map((item,index)=>[item.index,index]));
+  const stagger=Math.min(12,100/Math.max(1,tracks.length-1));
+  const flights=tracks.map((track,index)=>track.animate([{transform:from[index]},{transform:target}],{duration:220,delay:rank.get(index)*stagger,easing:'linear',fill:'both'}));
   twistFlights.set(control,flights);
   Promise.all(flights.map(a=>a.finished)).then(()=>{if(twistFlights.get(control)===flights)stopTwist(control);}).catch(()=>{});
  }

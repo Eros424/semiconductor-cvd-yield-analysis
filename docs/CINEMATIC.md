@@ -12,6 +12,6 @@ The HTML is the maintained frontend entry for this release. Older local Python p
 
 Visual camera damping follows native scrolling without a wheel handler or a second scroll loop. Headline highlighting still follows actual scroll offset immediately.
 
-Text controls now use a vertical rollover: on hover or keyboard focus the original label moves downward while an identical copy enters from above, then holds. Only on leaving or blurring does it rise back sequentially. Both directions use 650ms linear timing; echo text is aria-hidden and accessible names remain whole. Touch press/release has the same behavior. Reduced motion keeps the original label static.
+Text controls now use a vertical rollover: on hover or keyboard focus the original label moves downward while an identical copy enters from above, then holds. Both entry and exit follow the same sequence: horizontal labels run right-to-left; the selected plain vertical A runs top-to-bottom. Only on leaving or blurring does it rise back sequentially. Both directions use 220ms linear timing with at most 100ms total stagger; echo text is aria-hidden and accessible names remain whole. Touch press/release has the same behavior. Reduced motion keeps the original label static.
 
 The finale BACK TO TOP label is read vertically from top to bottom and uses the same interaction. It scrolls precisely to the page top while preserving analysis state.
