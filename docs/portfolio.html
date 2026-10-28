@@ -44,10 +44,10 @@
 </div><div class="story-media"><div class="visual-wrap"><div class="technical-label"><span>CVD-02 / 2026.01.10</span><span>YIELD · PRESSURE · DEFECTS</span></div><div class="image-reveal"><a class="chart-link" href="../figures/15_interview_case.png" data-zoom>
 <img src="../figures/15_interview_case.png" width="1832" height="1171" alt="CVD-02 Yield, Pressure and Defect Count on 2026-01-10" style="--chart-ratio:1832/1171" loading="lazy" decoding="async"></a></div>
 <p class="chart-hint"><span>原始時間軸 · 陰影為觀察到的低良率區段</span><span>放大圖表 ↗</span></p><div class="event-range"><div class="event-alert"><strong>14:18</strong>第一筆低良率</div><div><strong>19:42</strong>最後一筆低良率</div><div><strong>20:36</strong>首次觀察到恢復</div></div></div></div>
-<a class="text-link story-analysis-link" href="#evidence-01"><span>查看數據與完整分析</span><span class="analysis-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a>
+<button class="text-link story-analysis-link" type="button" aria-controls="evidence-01" aria-expanded="true" hidden><span data-analysis-label>查看數據與完整分析</span><span class="analysis-icon" aria-hidden="true"><svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/></svg></span></button>
 <p class="scene-mark"><span>CVD / 發現異常</span><span>模擬資料 · 工程調查，仍待驗證</span></p>
 </div></div>
-<details class="story-evidence" id="evidence-01"><summary><span class="evidence-label"><small>01 / 深入這一步</small><strong>查看數據與分析</strong></span><span class="evidence-affordance"><span class="when-closed">展開閱讀</span><span class="when-open">收合內容</span><span class="evidence-plus" aria-hidden="true">＋</span></span></summary><div class="evidence-body">
+<section class="story-evidence" aria-labelledby="story-title-case" id="evidence-01"><div class="evidence-body">
 
       <h3>先找時間點，再看一起改變的參數。</h3>
       <p class="prose">我先檢查批次、時間與缺失值，再以 Yield &lt; 95% 篩出需要調查的批次。CVD-02 在 2026-01-10 出現連續 7 筆低良率批次，值得回頭檢查同一段時間的製程條件。</p>
@@ -65,7 +65,7 @@
         <p>不同設備、配方要分開建立基準。我取各 Tool × Recipe 前 60% 的時間序列估計控制限，後續固定使用。基準期本身也有訊號，這組控制限適合回溯篩查，尚未完成量產基準驗證。</p>
         <p><a href="../figures/06_spc_pressure.png">查看 Pressure I-MR Chart</a> · <a href="../results/spc_excursions.csv">查看異常批次表</a> · <a href="../figures/10_cvd02_excursion_case.png">查看六項參數完整時間軸</a></p>
       </details>
-    </div></details>
+    </div></section>
 <figure class="chapter-transition" data-transition data-transition-index="0" data-direction="horizontal">
 <div class="transition-stage" style="--matte-image:url('assets/cinematic/soft-chamber.jpg')"><div class="transition-frame">
 <div class="transition-camera transition-out"><img src="assets/cinematic/wafer-concept.jpg" width="1672" height="941" loading="lazy" decoding="async" alt="" aria-hidden="true"></div>
@@ -81,10 +81,10 @@
 <p class="story-line">三台設備的平均良率很接近。<br>換看失敗頻率，調查的優先順序就清楚了。</p><p class="story-stat"><strong>18.8%</strong><span>CVD-02 的低良率比例</span></p><p class="story-takeaway">比較設備，也比較波動。</p>
 
 </div><div class="story-media"><div class="visual-wrap"><div class="technical-label"><span>TOOL HEALTH</span><span>低良率比例 · YIELD &lt; 95%</span></div><p class="comparison-title">Same mean.<br><em>Different stories.</em></p><div class="tool-row reveal " style="--reveal-delay:0ms"><span class="tool-name">CVD-01</span><span class="tool-rate">11.2%</span><span class="tool-note">Yield SD 較大</span></div><div class="tool-row reveal featured" style="--reveal-delay:100ms"><span class="tool-name">CVD-02</span><span class="tool-rate">18.8%</span><span class="tool-note">低良率比例最高</span></div><div class="tool-row reveal " style="--reveal-delay:200ms"><span class="tool-name">CVD-03</span><span class="tool-rate">9.4%</span><span class="tool-note">Pressure SD 較大</span></div><p class="panel-note">CVD-02 優先調查失敗頻率；CVD-01 追蹤良率重複性；CVD-03 追蹤壓力穩定度。不同指標，對應不同檢查。</p></div></div>
-<a class="text-link story-analysis-link" href="#evidence-02"><span>查看數據與完整分析</span><span class="analysis-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a>
+<button class="text-link story-analysis-link" type="button" aria-controls="evidence-02" aria-expanded="true" hidden><span data-analysis-label>查看數據與完整分析</span><span class="analysis-icon" aria-hidden="true"><svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/></svg></span></button>
 <p class="scene-mark"><span>CVD / 比較設備</span><span>模擬資料 · 工程調查，仍待驗證</span></p>
 </div></div>
-<details class="story-evidence" id="evidence-02"><summary><span class="evidence-label"><small>02 / 深入這一步</small><strong>查看數據與分析</strong></span><span class="evidence-affordance"><span class="when-closed">展開閱讀</span><span class="when-open">收合內容</span><span class="evidence-plus" aria-hidden="true">＋</span></span></summary><div class="evidence-body">
+<section class="story-evidence" aria-labelledby="story-title-tools" id="evidence-02"><div class="evidence-body">
 
       <h3>設備好不好，要看失敗頻率，也要看波動。</h3>
       <p class="prose">如果只看平均良率，三台設備很接近。我另外比較低良率比例與波動程度；分析波動時，先扣除各配方自己的平均值，減少配方切換造成的差異。波動用標準差（SD）表示，數字越大，代表批次差異越大。</p>
@@ -103,7 +103,7 @@
         <p>兩種配方的薄膜目標分別是 100 nm 與 105 nm。如果直接混在一起比較，可能把合理的配方差異誤認成設備漂移。扣除配方平均值能減少這個影響，但不能消除所有混雜因素。</p>
         <p><a href="../figures/11_tool_health_comparison.png">查看完整 Tool Health 圖</a> · <a href="../results/tool_health_summary.csv">查看各項指標</a></p>
       </details>
-    <figure class="figure-card"><a href="../figures/11_tool_health_comparison.png" data-zoom><img src="../figures/11_tool_health_comparison.png" alt="Original Tool Health Comparison" loading="lazy" width="2363" height="1341" decoding="async"></a><figcaption><p class="reading">補充原始分析圖表；內容未重算或裁切。</p></figcaption></figure></div></details>
+    <figure class="figure-card"><a href="../figures/11_tool_health_comparison.png" data-zoom><img src="../figures/11_tool_health_comparison.png" alt="Original Tool Health Comparison" loading="lazy" width="2363" height="1341" decoding="async"></a><figcaption><p class="reading">補充原始分析圖表；內容未重算或裁切。</p></figcaption></figure></div></section>
 <figure class="chapter-transition" data-transition data-transition-index="1" data-direction="vertical">
 <div class="transition-stage" style="--matte-image:url('assets/cinematic/soft-vacuum.jpg')"><div class="transition-frame">
 <div class="transition-camera transition-out"><img src="assets/cinematic/soft-chamber.jpg" width="1672" height="941" loading="lazy" decoding="async" alt="" aria-hidden="true"></div>
@@ -119,10 +119,10 @@
 <p class="story-line">缺陷與良率最相關；但在異常起點，<br>壓力也同時偏移，值得優先核對紀錄。</p><p class="story-stat"><strong>Pressure</strong><span>優先調查的製程變數</span></p><p class="story-takeaway">一起變化，是線索；還不是因果。</p>
 
 </div><div class="story-media"><div class="visual-wrap"><div class="technical-label"><span>CONTRIBUTOR SCREENING</span><span>全資料 · PEARSON r</span></div><p class="pressure-word reveal">PRESSURE</p><div class="rank-row reveal " style="--reveal-delay:0ms"><span class="rank">01</span><span class="parameter">Defect Count</span><span class="r">r = -0.64</span></div><div class="rank-row reveal featured" style="--reveal-delay:100ms"><span class="rank">02</span><span class="parameter">Pressure</span><span class="r">r = -0.43</span></div><div class="rank-row reveal " style="--reveal-delay:200ms"><span class="rank">03</span><span class="parameter">Temperature</span><span class="r">r = -0.35</span></div><p class="panel-note">缺陷的關聯最強；壓力是排名最高的製程變數。這是優先調查方向，尚未確認設備根因。</p></div></div>
-<a class="text-link story-analysis-link" href="#evidence-03"><span>查看數據與完整分析</span><span class="analysis-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a>
+<button class="text-link story-analysis-link" type="button" aria-controls="evidence-03" aria-expanded="true" hidden><span data-analysis-label>查看數據與完整分析</span><span class="analysis-icon" aria-hidden="true"><svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/></svg></span></button>
 <p class="scene-mark"><span>CVD / 縮小原因</span><span>模擬資料 · 工程調查，仍待驗證</span></p>
 </div></div>
-<details class="story-evidence" id="evidence-03"><summary><span class="evidence-label"><small>03 / 深入這一步</small><strong>查看數據與分析</strong></span><span class="evidence-affordance"><span class="when-closed">展開閱讀</span><span class="when-open">收合內容</span><span class="evidence-plus" aria-hidden="true">＋</span></span></summary><div class="evidence-body">
+<section class="story-evidence" aria-labelledby="story-title-cause" id="evidence-03"><div class="evidence-body">
 
       <h3>缺陷最相關，為什麼我還是先查壓力？</h3>
       <p class="prose">我結合 Yield 相關性、正常／低良率組的差異與效果量，再校正 Tool、Recipe 和時間，建立調查排序。全資料的前三項是：</p>
@@ -137,7 +137,7 @@
         <p>Equipment maintenance data is not available, therefore these are engineering hypotheses rather than confirmed hardware root causes.</p>
         <p><a href="../figures/12_root_cause_summary.png">查看完整 Contributor Ranking</a> · <a href="../results/root_cause_summary.csv">查看效果量與統計結果</a></p>
       </details>
-    <figure class="figure-card"><a href="../figures/12_root_cause_summary.png" data-zoom><img src="../figures/12_root_cause_summary.png" alt="Original Contributor Ranking" loading="lazy" width="2703" height="1007" decoding="async"></a><figcaption><p class="reading">補充原始分析圖表；內容未重算或裁切。</p></figcaption></figure></div></details>
+    <figure class="figure-card"><a href="../figures/12_root_cause_summary.png" data-zoom><img src="../figures/12_root_cause_summary.png" alt="Original Contributor Ranking" loading="lazy" width="2703" height="1007" decoding="async"></a><figcaption><p class="reading">補充原始分析圖表；內容未重算或裁切。</p></figcaption></figure></div></section>
 <figure class="chapter-transition" data-transition data-transition-index="2" data-direction="horizontal">
 <div class="transition-stage" style="--matte-image:url('assets/cinematic/soft-control.jpg')"><div class="transition-frame">
 <div class="transition-camera transition-out"><img src="assets/cinematic/soft-vacuum.jpg" width="1672" height="941" loading="lazy" decoding="async" alt="" aria-hidden="true"></div>
@@ -155,10 +155,10 @@
 </div><div class="story-media"><div class="visual-wrap"><div class="technical-label"><span>VIRTUAL DOE</span><span>PRESSURE × TEMPERATURE</span></div><div class="image-reveal"><a class="chart-link" href="../figures/14_process_window.png" data-zoom>
 <img src="../figures/14_process_window.png" width="2322" height="1007" alt="Observed Pressure and Temperature process window by recipe" style="--chart-ratio:2322/1007" loading="lazy" decoding="async"></a></div>
 <p class="chart-hint"><span>完整原始座標與圖例 · 紅框為候選觀測資料格</span><span>放大圖表 ↗</span></p><div class="window-metrics"><div><strong>47</strong><span>RCP-A 候選批次</span></div><div><strong>97.66%</strong><span>候選格平均 Yield</span></div><div><strong>0.79 pp</strong><span>Yield 標準差</span></div></div><p class="panel-note">歷史資料的觀察性分析，尚未進行隨機化晶圓實驗；不是已合格的量產製程範圍。</p></div></div>
-<a class="text-link story-analysis-link" href="#evidence-04"><span>查看數據與完整分析</span><span class="analysis-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a>
+<button class="text-link story-analysis-link" type="button" aria-controls="evidence-04" aria-expanded="true" hidden><span data-analysis-label>查看數據與完整分析</span><span class="analysis-icon" aria-hidden="true"><svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/></svg></span></button>
 <p class="scene-mark"><span>CVD / 規劃驗證</span><span>模擬資料 · 工程調查，仍待驗證</span></p>
 </div></div>
-<details class="story-evidence" id="evidence-04"><summary><span class="evidence-label"><small>04 / 深入這一步</small><strong>查看數據與分析</strong></span><span class="evidence-affordance"><span class="when-closed">展開閱讀</span><span class="when-open">收合內容</span><span class="evidence-plus" aria-hidden="true">＋</span></span></summary><div class="evidence-body">
+<section class="story-evidence" aria-labelledby="story-title-window" id="evidence-04"><div class="evidence-body">
 
       <h3>找到線索後，怎麼規劃下一步驗證？</h3>
       <p class="prose">我把 Pressure 與 Temperature 組合起來，查看哪些歷史條件的 Yield 較高、波動較小。這是 <strong>Virtual DOE／觀察性分析</strong>，沒有實際做隨機化晶圓實驗。</p>
@@ -171,7 +171,7 @@
         <figure class="figure-card"><a href="../figures/14_process_window.png" data-zoom><img src="../figures/14_process_window.png" alt="Observed Pressure and Temperature process window by recipe" loading="lazy" width="2322" height="1007" decoding="async"></a><figcaption><p class="reading"><strong>Engineering Insight</strong>紅框是值得進一步測試的歷史資料區間，不能直接拿來修改量產配方。RCP-B 候選只有 10 筆，證據更有限。</p></figcaption></figure>
         <p><a href="../figures/13_doe_heatmap.png">查看 Virtual DOE Heatmap</a> · <a href="../results/process_window_summary.csv">查看每格樣本數與波動</a></p>
       </details>
-    <figure class="figure-card"><a href="../figures/13_doe_heatmap.png" data-zoom><img src="../figures/13_doe_heatmap.png" alt="Original Virtual DOE Heatmap" loading="lazy" width="2118" height="855" decoding="async"></a><figcaption><p class="reading">補充原始分析圖表；內容未重算或裁切。</p></figcaption></figure></div></details>
+    <figure class="figure-card"><a href="../figures/13_doe_heatmap.png" data-zoom><img src="../figures/13_doe_heatmap.png" alt="Original Virtual DOE Heatmap" loading="lazy" width="2118" height="855" decoding="async"></a><figcaption><p class="reading">補充原始分析圖表；內容未重算或裁切。</p></figcaption></figure></div></section>
 <figure class="chapter-transition" data-transition data-transition-index="3" data-direction="horizontal">
 <div class="transition-stage" style="--matte-image:url('assets/cinematic/wafer-concept.jpg')"><div class="transition-frame">
 <div class="transition-camera transition-out"><img src="assets/cinematic/soft-control.jpg" width="1672" height="941" loading="lazy" decoding="async" alt="" aria-hidden="true"></div>
@@ -187,10 +187,10 @@
 <p class="story-line">把發現變成具體的工程行動，<br>也說清楚：哪些有證據，哪些仍待驗證。</p><p class="story-stat"><strong>3 個行動</strong><span>審查訊號 · 核對壓力 · 規劃實驗</span></p><p class="story-takeaway">觀察 → 判斷 → 驗證。</p>
 
 </div><div class="story-media"><div class="visual-wrap"><div class="technical-label"><span>ENGINEERING ACTIONS</span><span>建議，尚待執行與驗證</span></div><div class="action-word reveal" style="--reveal-delay:0ms"><b>OBSERVE</b><span>審查異常訊號</span></div><div class="action-word reveal" style="--reveal-delay:110ms"><b>ANALYZE</b><span>核對壓力與設備紀錄</span></div><div class="action-word reveal" style="--reveal-delay:220ms"><b>VERIFY</b><span>規劃正式 DOE 驗證</span></div></div></div>
-<a class="text-link story-analysis-link" href="#evidence-05"><span>查看數據與完整分析</span><span class="analysis-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></a>
+<button class="text-link story-analysis-link" type="button" aria-controls="evidence-05" aria-expanded="true" hidden><span data-analysis-label>查看數據與完整分析</span><span class="analysis-icon" aria-hidden="true"><svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-6-6 6 6-6 6"/></svg><svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14"/></svg></span></button>
 <p class="scene-mark"><span>CVD / 提出行動</span><span>模擬資料 · 工程調查，仍待驗證</span></p>
 </div></div>
-<details class="story-evidence" id="evidence-05"><summary><span class="evidence-label"><small>05 / 深入這一步</small><strong>查看數據與分析</strong></span><span class="evidence-affordance"><span class="when-closed">展開閱讀</span><span class="when-open">收合內容</span><span class="evidence-plus" aria-hidden="true">＋</span></span></summary><div class="evidence-body">
+<section class="story-evidence" aria-labelledby="story-title-actions" id="evidence-05"><div class="evidence-body">
 
       <h3>最後，把發現變成三個具體行動。</h3>
       <ol class="next-actions">
@@ -199,10 +199,10 @@
         <li><strong>用實驗驗證候選條件。</strong>規劃 Pressure × Temperature DOE，固定其他條件並納入設備分組，同時看 Yield、薄膜品質與缺陷。</li>
       </ol>
       <div class="interview-close"><h3>這份作品展現的判斷</h3><p>我能從批次資料定位問題，區分配方差異與設備波動，用多種證據排定調查順序，並清楚說明哪些結論已被資料支持、哪些還需要驗證。</p></div>
-    </div></details>
+    </div></section>
 
 </section>
-<section class="finale full-bleed" id="conclusion" aria-labelledby="conclusion-title"><div class="photo-camera finale-camera" data-photo="finale"><img class="finale-photo" src="assets/cinematic/wafer-concept.jpg" width="1672" height="941" alt="" loading="lazy" aria-hidden="true"></div><p class="eyebrow">THE NEXT QUESTION / 結論</p><h2 class="text-reveal" id="conclusion-title"><span class="text-line"><span>從異常出發，</span></span><span class="text-line"><span>讓每一步判斷都有依據。</span></span></h2><p>這份分析從 500 筆模擬批次中定位異常，再比較設備與製程條件，將<strong>壓力列為優先調查方向</strong>，並找出值得進一步實驗的候選條件。</p><p>目前的證據支持調查順序；根因與改善成效，仍需設備紀錄及正式實驗驗證。</p><p class="closing-line">用數據縮小問題，用驗證確認答案。</p><div class="closing-links"><a class="text-link" href="technical_report.html">完整技術報告 <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">GitHub <span aria-hidden="true">↗</span></a><a class="text-link" href="../README.md">README / 重跑方式 <span aria-hidden="true">↗</span></a></div></section>
+<section class="finale full-bleed" id="conclusion" aria-labelledby="conclusion-title"><div class="photo-camera finale-camera" data-photo="finale"><img class="finale-photo" src="assets/cinematic/wafer-concept.jpg" width="1672" height="941" alt="" loading="lazy" aria-hidden="true"></div><p class="eyebrow">THE NEXT QUESTION / 結論</p><h2 class="text-reveal" id="conclusion-title"><span class="text-line"><span>從異常出發，</span></span><span class="text-line"><span>讓每一步判斷都有依據。</span></span></h2><p>這份分析從 500 筆模擬批次中定位異常，再比較設備與製程條件，將<strong>壓力列為優先調查方向</strong>，並找出值得進一步實驗的候選條件。</p><p>目前的證據支持調查順序；根因與改善成效，仍需設備紀錄及正式實驗驗證。</p><p class="closing-line">用數據縮小問題，用驗證確認答案。</p><div class="closing-links"><a class="text-link" href="technical_report.html">完整技術報告 <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/Eros424/semiconductor-cvd-yield-analysis">GitHub <span aria-hidden="true">↗</span></a><a class="text-link" href="../README.md">README / 重跑方式 <span aria-hidden="true">↗</span></a></div><a class="back-to-top" href="#top" aria-label="回到頂端"><span class="top-arrow" aria-hidden="true">↑</span><span class="top-letter-rail" aria-hidden="true"><span class="top-letter">B</span><span class="top-letter">A</span><span class="top-letter">C</span><span class="top-letter">K</span><span class="top-space"></span><span class="top-letter">T</span><span class="top-letter">O</span><span class="top-space"></span><span class="top-letter">T</span><span class="top-letter">O</span><span class="top-letter">P</span></span></a></section>
 </main>
 <footer class="site-footer"><div><p>CVD / ENGINEERING PORTFOLIO</p><p>模擬資料分析 · 未驗證量產根因或改善成效</p><p>晶圓背景為 AI 生成示意，非設備實拍。</p></div><div class="footer-links"><a href="../README.md">分析與重跑方式</a><a href="#top">回到首頁 ↑</a></div></footer>
 <dialog class="lightbox" aria-labelledby="chart-caption"><div class="focus-backdrop" aria-hidden="true"></div><div class="lightbox-header"><p id="chart-caption" data-chart-caption></p><button class="lightbox-close" type="button" aria-label="返回閱讀">×</button></div><div class="lightbox-viewport" tabindex="0" aria-label="圖表檢視區，原始大小可捲動"><div class="focus-image-shell"><img alt=""></div></div><div class="lightbox-footer"><button class="lightbox-close" data-actual-size type="button" aria-pressed="false">原始大小</button><a href="../figures/15_interview_case.png" data-original-chart target="_blank" rel="noopener">另開原始圖片 ↗</a><span>Esc／瀏覽器返回 · 完整座標軸保留</span></div></dialog>

@@ -4,8 +4,10 @@ The Chinese and English portfolio entries use static HTML, CSS and vanilla JavaS
 
 Serve the repository root with `python3 -m http.server 8000` and open `http://localhost:8000/docs/portfolio.html`.
 
-The opening title highlight and silver sweep follow actual scroll progress, including pauses and reverse scrolling. A short sticky runway keeps the title visible before the camera and copy leave. Reduced-motion and no-JavaScript modes keep content readable without the runway. Detailed analysis retains native keyboard-accessible accordions; chart focus is optional and supports Escape and browser history.
+The opening title highlight and silver sweep follow actual scroll progress, including pauses and reverse scrolling. A short sticky runway keeps the title visible before the camera and copy leave. Reduced-motion and no-JavaScript modes keep content readable without the runway. Each chapter uses one centered native button to open and close the original full analysis. Duplicate disclosure rows are removed. The button exposes aria-controls and aria-expanded; expansion can be interrupted or reversed. Without JavaScript all analysis is directly readable. Chart focus remains optional and supports Escape and browser history.
 
 Only conceptual photography uses crop, pan, zoom and matte backdrops. Engineering charts retain complete axes and legends. Original analysis, CSV data and the technical report are preserved. Image provenance is documented in assets/cinematic/README.md.
 
 The HTML is the maintained frontend entry for this release. Older local Python portfolio generators can overwrite it with their earlier template; do not run those generators as a website deployment step. Python analysis and data are not changed by this release.
+
+Visual camera damping follows native scrolling without a wheel handler or a second scroll loop. Headline highlighting still follows actual scroll offset immediately. The finale has a vertical BACK TO TOP link with a one-shot 360-degree staggered letter twist on hover/focus/touch. Reduced motion disables the twist, damping and panel expansion animation.

@@ -27,6 +27,18 @@
   let frame = 0;
   let activeId = '';
   let navHeight = 76;
+  const cameraState = new WeakMap();
+  let previousPaint = performance.now();
+  // A little visual inertia; document scrolling and glyph progress stay native.
+  function dampCamera(target,value,delta,visible) {
+    if(!sequencedHero||reduced.matches||document.hidden||!visible){cameraState.set(target,value);return value;}
+    const previous=cameraState.has(target)?cameraState.get(target):value;
+    const next=previous+(value-previous)*(1-Math.exp(-delta/(desktop.matches?125:65)));
+    const settled=Math.abs(next-value)<.0005;
+    cameraState.set(target,settled?value:next);
+    if(!settled)schedule();
+    return settled?value:next;
+  }
 
   // Grid-overlaid glyphs preserve a single selectable, accessible base string.
   function splitType(target) {
@@ -94,6 +106,8 @@
 
   function paint() {
     frame = 0;
+    const now=performance.now();
+    const delta=Math.min(64,Math.max(1,now-previousPaint));previousPaint=now;
     const height = innerHeight;
     // Read layout first, then write only paint/composite properties.
     const total = document.documentElement.scrollHeight-height;
@@ -135,13 +149,15 @@
     }
     for (const {target,rect} of photoLayouts) {
       const isHero=target.dataset.photo==='hero';
-      const p=isHero?heroP:clamp((height-rect.top)/Math.max(1,height+rect.height));
+      const raw=isHero?heroP:clamp((height-rect.top)/Math.max(1,height+rect.height));
+      const p=dampCamera(target,raw,delta,rect.bottom>0&&rect.top<height);
       const strength=desktop.matches?1:.45;
       target.style.setProperty('--photo-scale',motion?String((isHero?1:1.05)+p*.12*strength):'1');
       target.style.setProperty('--photo-y',motion?`${(isHero?p*3:(p-.5)*4)*strength}%`:'0%');
     }
     for (const {target,rect} of transitionLayouts) {
-      const p=motion?clamp((height*.8-rect.top)/Math.max(1,rect.height-height*.15)):1;
+      const raw=motion?clamp((height*.8-rect.top)/Math.max(1,rect.height-height*.15)):1;
+      const p=dampCamera(target,raw,delta,rect.bottom>0&&rect.top<height);
       const cross=clamp((p-.2)/.65);
       const strength=desktop.matches?1:.45;
       const values={

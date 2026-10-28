@@ -2,15 +2,6 @@
 /* B only: matte depth around expansion, with crisp source evidence. */
 .focus-backdrop { background: #111913ad; backdrop-filter: blur(14px) saturate(.65); -webkit-backdrop-filter: blur(14px) saturate(.65); }
 .transition-stage::before { content: ''; position: absolute; inset: -30px; background: var(--matte-image) center/cover; filter: blur(22px) saturate(.7); opacity: .25; transform: scale(1.08); }
-/* Restore the approved accordion treatment while an inline alternative is explored. */
-.story-evidence>summary { list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 115px; width: min(1200px,100%); margin: auto; cursor: pointer; }
-.story-evidence>summary::-webkit-details-marker { display: none; }
-.evidence-affordance { display: flex; align-items: center; gap: 18px; font-size: 12px; }
-.evidence-plus { font-size: 27px; font-weight: 300; }
-.story-evidence>summary:hover .evidence-label strong { text-decoration: underline; text-underline-offset: 7px; }
-.story-evidence .when-open,.story-evidence[open] .when-closed { display: none; }
-.story-evidence[open] .when-open { display: inline; }
-.story-evidence[open] .evidence-plus { transform: rotate(45deg); }
 .evidence-body { padding-top: 30px; }
 .evidence-body details { margin: 30px 0; border-top: 1px solid #68786166; border-bottom: 1px solid #68786166; padding: 20px 0; font-size: 15px; }
 .evidence-body details>summary { cursor: pointer; min-height: 44px; display: list-item; align-content: center; }
@@ -18,9 +9,6 @@
 @media(max-width:600px) {
  .focus-backdrop { backdrop-filter: blur(9px) saturate(.7); -webkit-backdrop-filter: blur(9px) saturate(.7); }
  .transition-stage::before { filter: blur(16px) saturate(.7); }
- .story-evidence>summary { min-height: 105px; gap: 15px; }
- .evidence-affordance { gap: 10px; font-size: 11px; white-space: nowrap; }
- .evidence-plus { font-size: 24px; }
  .evidence-body { padding-top: 24px; }
 }
 /* A clear focal photograph, with the soft matte confined behind its aperture. */
@@ -128,4 +116,29 @@
 /* Let a short laptop scene grow to keep the centered invitation below evidence. */
 @media (min-width: 1001px) and (min-height: 650px) {
  .motion-enabled .story-scene { height: auto; min-height: calc(100svh - var(--nav-height)); }
+}
+
+/* The single chapter button owns disclosure; no duplicate reading bar. */
+.story-analysis-link { background: transparent; scroll-margin-top: calc(var(--nav-height) + 24px); }
+.story-analysis-link[hidden],.story-evidence[hidden] { display: none; }
+.analysis-icon .icon-close { display: none; }
+.story-analysis-link[aria-expanded=true] .analysis-icon { border-color: var(--accent); }
+.story-analysis-link[aria-expanded=true] .icon-open { display: none; }
+.story-analysis-link[aria-expanded=true] .icon-close { display: block; }
+.story-evidence { overflow-anchor: none; }
+/* Vertical finale link: its letters turn once, only when interacted with. */
+.back-to-top {
+ position: absolute; top: 50%; right: var(--gutter); transform: translateY(-50%);
+ display: flex; flex-direction: column; align-items: center; gap: 16px;
+ min-width: 48px; padding: 14px 8px; text-decoration: none; color: var(--accent);
+}
+.top-arrow { font-size: 22px; line-height: 1; }
+.top-letter-rail { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.top-letter { display: block; font: 11px/1.15 "Helvetica Neue",sans-serif; }
+.top-space { height: 7px; }
+@media (min-width: 1001px) {
+ .finale { padding-right: calc(var(--gutter) + 72px); }
+}
+@media (max-width: 1000px) {
+ .back-to-top { position: relative; inset: auto; transform: none; align-self: flex-end; margin-top: 30px; }
 }
