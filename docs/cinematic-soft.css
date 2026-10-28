@@ -143,12 +143,27 @@
  .back-to-top { position: relative; inset: auto; transform: none; align-self: flex-end; margin-top: 30px; }
 }
 
-/* Scoped resets protect glyphs from existing navigation span typography. */
-.twist-ready .twist-text,.twist-ready .twist-word,.twist-ready .twist-letter {
+/* Label wrappers keep the original flex grouping, type and accessible name. */
+.twist-ready { position: relative; }
+.twist-ready .twist-text {
  font: inherit; line-height: inherit; letter-spacing: inherit; color: inherit;
- margin: 0; padding: 0; vertical-align: baseline;
+ margin: 0; padding: 0; display: inline; vertical-align: baseline;
 }
-.twist-ready .twist-word { display: inline-block; white-space: nowrap; }
-.twist-ready .twist-letter { display: inline-block; transform-origin: center center; }
+.twist-layer { position: absolute; z-index: 2; pointer-events: none; user-select: none; }
+.twist-band { position: absolute; overflow: hidden; transform-origin: center center; }
 
-.twist-ready .twist-text { display: inline; }
+.twist-ready .twist-layer,.twist-ready .twist-band {
+ margin: 0; padding: 0; border: 0; font: inherit; line-height: inherit;
+ letter-spacing: inherit; color: inherit;
+}
+
+.twist-ready.text-link { overflow: visible; }
+
+/* The latest direction is horizontal, including the finale label. */
+.back-to-top { flex-direction: row; gap: 12px; }
+.top-letter-rail { flex-direction: row; gap: 1px; }
+.top-space { width: 6px; height: auto; }
+@media (min-width: 1001px) {
+ .back-to-top { top: auto; bottom: 32px; transform: none; }
+ .finale { padding-right: var(--gutter); }
+}

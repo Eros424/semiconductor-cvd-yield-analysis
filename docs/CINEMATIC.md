@@ -10,6 +10,10 @@ Only conceptual photography uses crop, pan, zoom and matte backdrops. Engineerin
 
 The HTML is the maintained frontend entry for this release. Older local Python portfolio generators can overwrite it with their earlier template; do not run those generators as a website deployment step. Python analysis and data are not changed by this release.
 
-Visual camera damping follows native scrolling without a wheel handler or a second scroll loop. Headline highlighting still follows actual scroll offset immediately. The finale has a vertical BACK TO TOP link with a one-shot 360-degree staggered letter twist on hover/focus/touch. Reduced motion disables the twist, damping and panel expansion animation.
+Visual camera damping follows native scrolling without a wheel handler or a second scroll loop. Headline highlighting still follows actual scroll offset immediately. The finale has a horizontal BACK TO TOP link with a one-shot continuous horizontal ribbon twist on hover/focus/touch. Reduced motion disables the twist, damping and panel expansion animation.
 
-Text controls share the finale letter-twist interaction on hover, keyboard focus and touch. Word grouping and full accessible names are preserved, including labels that change when opening analysis or switching chart modes. The effect is one-shot and disabled under reduced motion; chart imagery and analysis data are not animated by this text system.
+Text controls share the finale continuous ribbon-twist interaction on hover, keyboard focus and touch. Word grouping and full accessible names are preserved, including labels that change when opening analysis or switching chart modes. The effect is one-shot and disabled under reduced motion; chart imagery and analysis data are not animated by this text system.
+
+The twist deforms complete text surfaces continuously along their horizontal axis, like wringing a ribbon. It does not flip individual characters. Temporary, aria-hidden strips use synchronized transform/opacity animation and are removed after the interaction; the original text is fully restored.
+
+Latest motion tuning: horizontal continuous twist, 650ms per cycle. The finale BACK TO TOP label is horizontal as well.

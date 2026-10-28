@@ -14,54 +14,62 @@
   });
  });
  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
- // Shared one-shot letter twist for every text-based control.
+ // One continuous horizontal ribbon, sliced by position rather than by characters.
  const twistRoots=new Set();
  const twistFlights=new WeakMap();
- const segmenter='Segmenter' in Intl?new Intl.Segmenter(document.documentElement.lang,{granularity:'grapheme'}):null;
+ function stopTwist(control){twistFlights.get(control)?.();twistFlights.delete(control);}
  function decorateTwist(control){
-  const nodes=[];
-  const walker=document.createTreeWalker(control,NodeFilter.SHOW_TEXT);
+  const nodes=[],walker=document.createTreeWalker(control,NodeFilter.SHOW_TEXT);
   while(walker.nextNode()){
    const node=walker.currentNode;
-   if(node.textContent.trim()&&!node.parentElement.closest('.twist-letter,.arrow,.analysis-icon,svg,[aria-hidden=true],.sr-only'))nodes.push(node);
+   if(node.textContent.trim()&&!node.parentElement.closest('.twist-text,.arrow,.analysis-icon,svg,[aria-hidden=true],.sr-only'))nodes.push(node);
   }
   if(!nodes.length)return false;
-  // A full accessible name prevents screen readers from spelling each glyph.
+  stopTwist(control);
   if(!control.hasAttribute('aria-label')||control.dataset.twistOwnLabel==='true'){
-   const nameNodes=document.createTreeWalker(control,NodeFilter.SHOW_TEXT);let label='';
-   while(nameNodes.nextNode())if(!nameNodes.currentNode.parentElement.closest('[aria-hidden=true],svg'))label+=nameNodes.currentNode.textContent;
-   control.setAttribute('aria-label',label.replace(/\s+/g,' ').trim());
-   control.dataset.twistOwnLabel='true';
+   const names=document.createTreeWalker(control,NodeFilter.SHOW_TEXT);let label='';
+   while(names.nextNode())if(!names.currentNode.parentElement.closest('[aria-hidden=true],svg'))label+=names.currentNode.textContent;
+   control.setAttribute('aria-label',label.replace(/\s+/g,' ').trim());control.dataset.twistOwnLabel='true';
   }
-  (twistFlights.get(control)||[]).forEach(a=>a.cancel());
   control.classList.add('twist-ready');
-  for(const node of nodes){
-   const fragment=document.createDocumentFragment();
-   for(const token of node.textContent.split(/(\s+|[A-Za-z0-9]+(?:[-’'][A-Za-z0-9]+)*)/g)){
-    if(!token)continue;
-    if(/^\s+$/.test(token)){fragment.append(document.createTextNode(token));continue;}
-    const latin=/^[A-Za-z0-9]/.test(token);
-    const container=latin?document.createElement('span'):fragment;
-    if(latin)container.className='twist-word';
-    const letters=segmenter?[...segmenter.segment(token)].map(x=>x.segment):Array.from(token);
-    for(const character of letters){const letter=document.createElement('span');letter.className='twist-letter';letter.textContent=character;container.append(letter);}
-    if(latin)fragment.append(container);
-   }
-   const text=document.createElement('span');text.className='twist-text';
-   text.append(fragment);node.replaceWith(text);
-  }
+  for(const node of nodes){const text=document.createElement('span');text.className='twist-text';text.textContent=node.textContent;node.replaceWith(text);}
   return true;
  }
  function playTwist(control){
   if(reduced.matches)return;
-  const letters=[...control.querySelectorAll('.twist-letter,.top-letter')];
-  (twistFlights.get(control)||[]).forEach(a=>a.cancel());
-  const stagger=Math.min(45,360/Math.max(1,letters.length-1));
-  twistFlights.set(control,letters.map((letter,index)=>letter.animate([
-   {transform:'perspective(220px) rotateY(0deg)'},
-   {transform:'perspective(220px) rotateY(180deg)',offset:.5},
-   {transform:'perspective(220px) rotateY(360deg)'}
-  ],{duration:750,delay:index*stagger,easing:'cubic-bezier(.22,1,.36,1)'})));
+  stopTwist(control);
+  const sources=[...control.querySelectorAll('.twist-text,.top-letter-rail')].map(source=>({source,rect:source.getBoundingClientRect(),style:getComputedStyle(source)})).filter(x=>x.rect.width&&x.rect.height);
+  if(!sources.length)return;
+  const bounds=control.getBoundingClientRect(),border=getComputedStyle(control);
+  const left=Math.min(...sources.map(x=>x.rect.left)),right=Math.max(...sources.map(x=>x.rect.right));
+  const layers=[],flights=[],restore=[];
+  const cleanup=()=>{flights.forEach(a=>a.cancel());layers.forEach(el=>el.remove());restore.forEach(([el,value])=>el.style.opacity=value);};
+  twistFlights.set(control,cleanup);
+  for(const {source,rect,style} of sources){
+   const layer=document.createElement('span');layer.className='twist-layer';layer.setAttribute('aria-hidden','true');
+   Object.assign(layer.style,{left:`${rect.left-bounds.left-parseFloat(border.borderLeftWidth)}px`,top:`${rect.top-bounds.top-parseFloat(border.borderTopWidth)}px`,width:`${rect.width}px`,height:`${rect.height}px`,font:style.font,color:style.color,letterSpacing:style.letterSpacing,textTransform:style.textTransform});
+   const lineHeight=parseFloat(style.lineHeight);
+   const lineOffset=source.matches('.top-letter-rail')||!Number.isFinite(lineHeight)?0:(source.getClientRects()[0].height-lineHeight)/2;
+   const count=Math.max(12,Math.min(28,Math.ceil(rect.width/5)));
+   for(let i=0;i<count;i++){
+    const x=rect.width*i/count,w=rect.width/count;
+    const band=document.createElement('span');band.className='twist-band';
+    Object.assign(band.style,{left:`${x}px`,top:'0px',width:`${w+.4}px`,height:`${rect.height}px`});
+    const content=source.matches('.top-letter-rail')?source.cloneNode(true):document.createElement('span');
+    if(!source.matches('.top-letter-rail'))content.textContent=source.textContent;
+    Object.assign(content.style,{position:'absolute',left:`${-x}px`,top:`${lineOffset}px`,width:`${rect.width}px`,height:`${rect.height}px`,margin:'0',padding:'0',opacity:'1',font:style.font,color:style.color,letterSpacing:style.letterSpacing});
+    band.append(content);layer.append(band);
+    const position=((rect.left+x+w/2-left)/Math.max(1,right-left)-.5)*2;
+    const frames=Array.from({length:33},(_,step)=>{
+     const p=step/32,envelope=Math.sin(Math.PI*p),angle=2*Math.PI*p+position*Math.PI*.85*envelope;
+     const squeeze=Math.cos(angle),drift=Math.sin(angle)*envelope*3;
+     return {offset:p,transform:`translateY(${drift}px) scaleY(${squeeze}) skewX(${Math.sin(angle)*envelope*5}deg)`,opacity:.78+.22*Math.abs(squeeze)};
+    });
+    flights.push(band.animate(frames,{duration:650,easing:'linear'}));
+   }
+   restore.push([source,source.style.opacity]);source.style.opacity='0';control.append(layer);layers.push(layer);
+  }
+  Promise.all(flights.map(a=>a.finished)).then(()=>{if(twistFlights.get(control)===cleanup){cleanup();twistFlights.delete(control);}}).catch(()=>{});
  }
  function attachTwist(control){
   if(twistRoots.has(control))return;
@@ -71,9 +79,7 @@
   control.addEventListener('focus',()=>playTwist(control));
   control.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')playTwist(control);});
  }
- reduced.addEventListener('change',()=>{
-  if(reduced.matches)for(const control of twistRoots)(twistFlights.get(control)||[]).forEach(a=>a.cancel());
- });
+ reduced.addEventListener('change',()=>{if(reduced.matches)for(const control of twistRoots)stopTwist(control);});
 
  const controls = new Map();
  const flights = new Map();
