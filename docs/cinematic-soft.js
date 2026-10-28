@@ -14,11 +14,31 @@
   });
  });
  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
- // One continuous horizontal ribbon, sliced by position rather than by characters.
- const twistRoots=new Set();
- const twistFlights=new WeakMap();
- function stopTwist(control){twistFlights.get(control)?.();twistFlights.delete(control);}
+ // Text rolls down on entry, holds, and rises sequentially only on exit.
+ const twistRoots=new Set(),twistFlights=new WeakMap(),rollStates=new WeakMap();
+ const segmenter='Segmenter' in Intl?new Intl.Segmenter(document.documentElement.lang,{granularity:'grapheme'}):null;
+ function stopTwist(control){(twistFlights.get(control)||[]).forEach(a=>a.cancel());twistFlights.delete(control);}
+ function fillRollText(target,text){
+  const fragment=document.createDocumentFragment();
+  for(const token of text.split(/(\s+|[A-Za-z0-9]+(?:[-’'][A-Za-z0-9]+)*)/g)){
+   if(!token)continue;
+   if(/^\s+$/.test(token)){fragment.append(document.createTextNode(token));continue;}
+   const latin=/^[A-Za-z0-9]/.test(token),container=latin?document.createElement('span'):fragment;
+   if(latin)container.className='roll-word';
+   const letters=segmenter?[...segmenter.segment(token)].map(x=>x.segment):Array.from(token);
+   for(const character of letters){
+    const letter=document.createElement('span');letter.className='roll-letter';
+    const track=document.createElement('span');track.className='roll-track';
+    const original=document.createElement('span');original.className='roll-copy roll-original';original.textContent=character;
+    const echo=document.createElement('span');echo.className='roll-copy roll-echo';echo.textContent=character;echo.setAttribute('aria-hidden','true');
+    track.append(original,echo);letter.append(track);container.append(letter);
+   }
+   if(latin)fragment.append(container);
+  }
+  target.replaceChildren(fragment);
+ }
  function decorateTwist(control){
+  if(control.matches('.back-to-top'))return false;
   const nodes=[],walker=document.createTreeWalker(control,NodeFilter.SHOW_TEXT);
   while(walker.nextNode()){
    const node=walker.currentNode;
@@ -31,55 +51,36 @@
    while(names.nextNode())if(!names.currentNode.parentElement.closest('[aria-hidden=true],svg'))label+=names.currentNode.textContent;
    control.setAttribute('aria-label',label.replace(/\s+/g,' ').trim());control.dataset.twistOwnLabel='true';
   }
-  control.classList.add('twist-ready');
-  for(const node of nodes){const text=document.createElement('span');text.className='twist-text';text.textContent=node.textContent;node.replaceWith(text);}
+  control.classList.add('twist-ready','roll-ready');
+  for(const node of nodes){const text=document.createElement('span');text.className='twist-text';fillRollText(text,node.textContent);node.replaceWith(text);}
   return true;
  }
- function playTwist(control){
-  if(reduced.matches)return;
+ function playTwist(control,down){
+  const tracks=[...control.querySelectorAll('.roll-track')];
+  const from=tracks.map(track=>getComputedStyle(track).transform);
   stopTwist(control);
-  const sources=[...control.querySelectorAll('.twist-text,.top-letter-rail')].map(source=>({source,rect:source.getBoundingClientRect(),style:getComputedStyle(source)})).filter(x=>x.rect.width&&x.rect.height);
-  if(!sources.length)return;
-  const bounds=control.getBoundingClientRect(),border=getComputedStyle(control);
-  const left=Math.min(...sources.map(x=>x.rect.left)),right=Math.max(...sources.map(x=>x.rect.right));
-  const layers=[],flights=[],restore=[];
-  const cleanup=()=>{flights.forEach(a=>a.cancel());layers.forEach(el=>el.remove());restore.forEach(([el,value])=>el.style.opacity=value);};
-  twistFlights.set(control,cleanup);
-  for(const {source,rect,style} of sources){
-   const layer=document.createElement('span');layer.className='twist-layer';layer.setAttribute('aria-hidden','true');
-   Object.assign(layer.style,{left:`${rect.left-bounds.left-parseFloat(border.borderLeftWidth)}px`,top:`${rect.top-bounds.top-parseFloat(border.borderTopWidth)}px`,width:`${rect.width}px`,height:`${rect.height}px`,font:style.font,color:style.color,letterSpacing:style.letterSpacing,textTransform:style.textTransform});
-   const lineHeight=parseFloat(style.lineHeight);
-   const lineOffset=source.matches('.top-letter-rail')||!Number.isFinite(lineHeight)?0:(source.getClientRects()[0].height-lineHeight)/2;
-   const count=Math.max(12,Math.min(28,Math.ceil(rect.width/5)));
-   for(let i=0;i<count;i++){
-    const x=rect.width*i/count,w=rect.width/count;
-    const band=document.createElement('span');band.className='twist-band';
-    Object.assign(band.style,{left:`${x}px`,top:'0px',width:`${w+.4}px`,height:`${rect.height}px`});
-    const content=source.matches('.top-letter-rail')?source.cloneNode(true):document.createElement('span');
-    if(!source.matches('.top-letter-rail'))content.textContent=source.textContent;
-    Object.assign(content.style,{position:'absolute',left:`${-x}px`,top:`${lineOffset}px`,width:`${rect.width}px`,height:`${rect.height}px`,margin:'0',padding:'0',opacity:'1',font:style.font,color:style.color,letterSpacing:style.letterSpacing});
-    band.append(content);layer.append(band);
-    const position=((rect.left+x+w/2-left)/Math.max(1,right-left)-.5)*2;
-    const frames=Array.from({length:33},(_,step)=>{
-     const p=step/32,envelope=Math.sin(Math.PI*p),angle=2*Math.PI*p+position*Math.PI*.85*envelope;
-     const squeeze=Math.cos(angle),drift=Math.sin(angle)*envelope*3;
-     return {offset:p,transform:`translateY(${drift}px) scaleY(${squeeze}) skewX(${Math.sin(angle)*envelope*5}deg)`,opacity:.78+.22*Math.abs(squeeze)};
-    });
-    flights.push(band.animate(frames,{duration:650,easing:'linear'}));
-   }
-   restore.push([source,source.style.opacity]);source.style.opacity='0';control.append(layer);layers.push(layer);
-  }
-  Promise.all(flights.map(a=>a.finished)).then(()=>{if(twistFlights.get(control)===cleanup){cleanup();twistFlights.delete(control);}}).catch(()=>{});
+  const target=down&&!reduced.matches?'translateY(100%)':'translateY(0%)';
+  tracks.forEach(track=>track.style.transform=target);
+  if(reduced.matches)return;
+  const stagger=down?0:Math.min(25,180/Math.max(1,tracks.length-1));
+  const flights=tracks.map((track,index)=>track.animate([{transform:from[index]},{transform:target}],{duration:650,delay:index*stagger,easing:'linear',fill:'both'}));
+  twistFlights.set(control,flights);
+  Promise.all(flights.map(a=>a.finished)).then(()=>{if(twistFlights.get(control)===flights)stopTwist(control);}).catch(()=>{});
  }
+ function syncRoll(control){const state=rollStates.get(control);playTwist(control,!!(state?.hover||state?.keyboard||state?.touch));}
  function attachTwist(control){
   if(twistRoots.has(control))return;
-  twistRoots.add(control);
-  if(!control.matches('.back-to-top'))decorateTwist(control);
-  control.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')playTwist(control);});
-  control.addEventListener('focus',()=>playTwist(control));
-  control.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')playTwist(control);});
+  twistRoots.add(control);rollStates.set(control,{hover:false,keyboard:false,touch:false});
+  if(control.matches('.back-to-top')){control.classList.add('roll-ready');control.querySelectorAll('.top-letter').forEach(letter=>fillRollText(letter,letter.textContent));}
+  else decorateTwist(control);
+  control.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'){rollStates.get(control).hover=true;syncRoll(control);}});
+  control.addEventListener('pointerleave',event=>{const state=rollStates.get(control);if(event.pointerType==='touch')state.touch=false;else state.hover=false;syncRoll(control);});
+  control.addEventListener('focus',()=>{if(control.matches(':focus-visible')){rollStates.get(control).keyboard=true;syncRoll(control);}});
+  control.addEventListener('blur',()=>{rollStates.get(control).keyboard=false;syncRoll(control);});
+  control.addEventListener('pointerdown',event=>{const state=rollStates.get(control);if(event.pointerType==='touch'){state.touch=true;syncRoll(control);}else state.keyboard=false;});
+  for(const name of ['pointerup','pointercancel'])control.addEventListener(name,event=>{if(event.pointerType==='touch'){rollStates.get(control).touch=false;syncRoll(control);}});
  }
- reduced.addEventListener('change',()=>{if(reduced.matches)for(const control of twistRoots)stopTwist(control);});
+ reduced.addEventListener('change',()=>{for(const control of twistRoots){if(reduced.matches){stopTwist(control);control.querySelectorAll('.roll-track').forEach(track=>track.style.transform='translateY(0%)');}else syncRoll(control);}});
 
  const controls = new Map();
  const flights = new Map();
@@ -143,7 +144,7 @@
   if(reduced.matches)for(const [panel,button] of controls)setOpen(panel,button.getAttribute('aria-expanded')==='true',{animate:false});
  });
  revealHash();
- // One-shot vertical letter twist on focus/hover or touch, with native hash navigation.
+ // Top-to-bottom reading with the same held text rollover and page navigation.
  const topLink=document.querySelector('.back-to-top');
  if(topLink){
   attachTwist(topLink);
@@ -168,7 +169,7 @@
    const control=node.closest(interactiveText);
    if(control&&twistRoots.has(control))changed.add(control);
   }
-  for(const control of changed)if(decorateTwist(control)&&control.matches(':hover,:focus-visible'))playTwist(control);
+  for(const control of changed)if(decorateTwist(control))syncRoll(control);
  });
  for(const control of twistRoots)if(!control.matches('.back-to-top'))labelObserver.observe(control,{childList:true,subtree:true});
 })();

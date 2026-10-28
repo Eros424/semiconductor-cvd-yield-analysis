@@ -143,27 +143,23 @@
  .back-to-top { position: relative; inset: auto; transform: none; align-self: flex-end; margin-top: 30px; }
 }
 
-/* Label wrappers keep the original flex grouping, type and accessible name. */
-.twist-ready { position: relative; }
-.twist-ready .twist-text {
+
+/* Whole words keep their layout; only each clipped text track translates. */
+.twist-ready .twist-text,.roll-ready .roll-word,.roll-ready .roll-letter,.roll-ready .roll-track,.roll-ready .roll-copy {
  font: inherit; line-height: inherit; letter-spacing: inherit; color: inherit;
- margin: 0; padding: 0; display: inline; vertical-align: baseline;
+ margin: 0; padding: 0; border: 0;
 }
-.twist-layer { position: absolute; z-index: 2; pointer-events: none; user-select: none; }
-.twist-band { position: absolute; overflow: hidden; transform-origin: center center; }
-
-.twist-ready .twist-layer,.twist-ready .twist-band {
- margin: 0; padding: 0; border: 0; font: inherit; line-height: inherit;
- letter-spacing: inherit; color: inherit;
-}
-
-.twist-ready.text-link { overflow: visible; }
-
-/* The latest direction is horizontal, including the finale label. */
-.back-to-top { flex-direction: row; gap: 12px; }
-.top-letter-rail { flex-direction: row; gap: 1px; }
-.top-space { width: 6px; height: auto; }
+.twist-ready .twist-text { display: inline; }
+.roll-ready .roll-word { display: inline-block; white-space: nowrap; }
+.roll-ready .roll-letter { display: inline-block; height: 1.2em; line-height: 1.2; vertical-align: -.15em; overflow: hidden; }
+.roll-ready .roll-track { display: block; position: relative; height: 100%; line-height: 1.2; }
+.roll-ready .roll-copy { display: block; line-height: 1.2; }
+.roll-ready .roll-echo { position: absolute; inset: 0; transform: translateY(-100%); }
+/* The finale is read from top to bottom, with the same vertical rollover. */
+.back-to-top { flex-direction: column; gap: 16px; }
+.top-letter-rail { flex-direction: column; gap: 3px; }
+.top-space { width: auto; height: 7px; }
 @media (min-width: 1001px) {
- .back-to-top { top: auto; bottom: 32px; transform: none; }
- .finale { padding-right: var(--gutter); }
+ .back-to-top { top: 50%; bottom: auto; transform: translateY(-50%); }
+ .finale { padding-right: calc(var(--gutter) + 72px); }
 }
