@@ -60,11 +60,12 @@
   const from=tracks.map(track=>getComputedStyle(track).transform);
   const positions=tracks.map((track,index)=>({index,rect:track.parentElement.getBoundingClientRect()}));
   stopTwist(control);
-  const target=down&&!reduced.matches?'translateY(100%)':'translateY(0%)';
+  const flip=control.matches('.back-to-top');
+  const target=flip?(down&&!reduced.matches?'rotateY(180deg)':'rotateY(0deg)'):(down&&!reduced.matches?'translateY(100%)':'translateY(0%)');
   tracks.forEach(track=>track.style.transform=target);
   if(reduced.matches)return;
-  // Horizontal labels run right-to-left; the selected vertical A reads top-to-bottom.
-  const order=control.matches('.back-to-top')?positions:positions.sort((a,b)=>Math.abs(a.rect.top-b.rect.top)>4?a.rect.top-b.rect.top:b.rect.left-a.rect.left);
+  // Text labels roll right-to-left; vertical BACK TO TOP flips P-first, B-last.
+  const order=flip?[...positions].reverse():positions.sort((a,b)=>Math.abs(a.rect.top-b.rect.top)>4?a.rect.top-b.rect.top:b.rect.left-a.rect.left);
   const rank=new Map(order.map((item,index)=>[item.index,index]));
   const stagger=Math.min(12,100/Math.max(1,tracks.length-1));
   const flights=tracks.map((track,index)=>track.animate([{transform:from[index]},{transform:target}],{duration:220,delay:rank.get(index)*stagger,easing:'linear',fill:'both'}));
@@ -84,7 +85,7 @@
   control.addEventListener('pointerdown',event=>{const state=rollStates.get(control);if(event.pointerType==='touch'){state.touch=true;syncRoll(control);}else state.keyboard=false;});
   for(const name of ['pointerup','pointercancel'])control.addEventListener(name,event=>{if(event.pointerType==='touch'){rollStates.get(control).touch=false;syncRoll(control);}});
  }
- reduced.addEventListener('change',()=>{for(const control of twistRoots){if(reduced.matches){stopTwist(control);control.querySelectorAll('.roll-track').forEach(track=>track.style.transform='translateY(0%)');}else syncRoll(control);}});
+ reduced.addEventListener('change',()=>{for(const control of twistRoots){if(reduced.matches){stopTwist(control);control.querySelectorAll('.roll-track').forEach(track=>track.style.transform=control.matches('.back-to-top')?'rotateY(0deg)':'translateY(0%)');}else syncRoll(control);}});
 
  const controls = new Map();
  const flights = new Map();

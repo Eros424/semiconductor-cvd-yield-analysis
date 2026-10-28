@@ -163,3 +163,14 @@
  .back-to-top { top: 50%; bottom: auto; transform: translateY(-50%); }
  .finale { padding-right: calc(var(--gutter) + 72px); }
 }
+
+/* Approved BACK TO TOP: vertical reading, horizontal two-face flip. */
+.back-to-top .roll-letter { perspective: 160px; }
+.back-to-top .roll-track { transform-style: preserve-3d; transform: rotateY(0deg); }
+.back-to-top .roll-copy { backface-visibility: hidden; transform-origin: 50% 50%; }
+.back-to-top .roll-original { transform: rotateY(0deg); }
+.back-to-top .roll-echo { transform: rotateY(180deg); }
+@media (prefers-reduced-motion: reduce) {
+ .back-to-top .roll-track,.back-to-top .roll-original { transform: none!important; }
+ .back-to-top .roll-echo { visibility: hidden; }
+}
