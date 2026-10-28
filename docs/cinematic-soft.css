@@ -58,3 +58,29 @@
 @media (prefers-reduced-motion: reduce) {
  .hero .type-glint { display: none!important; animation: none!important; }
 }
+
+/* Study summary: clear labels and quiet rules carry emphasis, not oversized type. */
+.hero-metric {
+ padding-left: 20px;
+ border-left: 2px solid #78876b;
+}
+.hero-metric strong {
+ font-size: clamp(42px,4vw,56px);
+ font-weight: 500;
+ line-height: 1.15;
+ letter-spacing: -.035em;
+}
+.hero-metric>p {
+ font-size: 15px;
+ font-weight: 600;
+ margin-top: 12px;
+}
+.hero-metric .unit { font-size: 14px; font-weight: 400; margin-left: 10px; }
+.metric-note { margin-top: 8px; line-height: 1.7; }
+@media (max-width: 600px) {
+ .hero-metric { padding-left: 14px; }
+ .hero-metric strong,.hero-metric:last-child strong { font-size: 36px; }
+ .hero-metric:last-child { padding-top: 0; border-top: 0; }
+ .hero-metric>p { font-size: 14px; margin-top: 9px; }
+ .hero-metric .unit { font-size: 13px; }
+}
