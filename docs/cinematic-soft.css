@@ -142,3 +142,13 @@
 @media (max-width: 1000px) {
  .back-to-top { position: relative; inset: auto; transform: none; align-self: flex-end; margin-top: 30px; }
 }
+
+/* Scoped resets protect glyphs from existing navigation span typography. */
+.twist-ready .twist-text,.twist-ready .twist-word,.twist-ready .twist-letter {
+ font: inherit; line-height: inherit; letter-spacing: inherit; color: inherit;
+ margin: 0; padding: 0; vertical-align: baseline;
+}
+.twist-ready .twist-word { display: inline-block; white-space: nowrap; }
+.twist-ready .twist-letter { display: inline-block; transform-origin: center center; }
+
+.twist-ready .twist-text { display: inline; }

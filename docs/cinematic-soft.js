@@ -14,6 +14,67 @@
   });
  });
  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+ // Shared one-shot letter twist for every text-based control.
+ const twistRoots=new Set();
+ const twistFlights=new WeakMap();
+ const segmenter='Segmenter' in Intl?new Intl.Segmenter(document.documentElement.lang,{granularity:'grapheme'}):null;
+ function decorateTwist(control){
+  const nodes=[];
+  const walker=document.createTreeWalker(control,NodeFilter.SHOW_TEXT);
+  while(walker.nextNode()){
+   const node=walker.currentNode;
+   if(node.textContent.trim()&&!node.parentElement.closest('.twist-letter,.arrow,.analysis-icon,svg,[aria-hidden=true],.sr-only'))nodes.push(node);
+  }
+  if(!nodes.length)return false;
+  // A full accessible name prevents screen readers from spelling each glyph.
+  if(!control.hasAttribute('aria-label')||control.dataset.twistOwnLabel==='true'){
+   const nameNodes=document.createTreeWalker(control,NodeFilter.SHOW_TEXT);let label='';
+   while(nameNodes.nextNode())if(!nameNodes.currentNode.parentElement.closest('[aria-hidden=true],svg'))label+=nameNodes.currentNode.textContent;
+   control.setAttribute('aria-label',label.replace(/\s+/g,' ').trim());
+   control.dataset.twistOwnLabel='true';
+  }
+  (twistFlights.get(control)||[]).forEach(a=>a.cancel());
+  control.classList.add('twist-ready');
+  for(const node of nodes){
+   const fragment=document.createDocumentFragment();
+   for(const token of node.textContent.split(/(\s+|[A-Za-z0-9]+(?:[-’'][A-Za-z0-9]+)*)/g)){
+    if(!token)continue;
+    if(/^\s+$/.test(token)){fragment.append(document.createTextNode(token));continue;}
+    const latin=/^[A-Za-z0-9]/.test(token);
+    const container=latin?document.createElement('span'):fragment;
+    if(latin)container.className='twist-word';
+    const letters=segmenter?[...segmenter.segment(token)].map(x=>x.segment):Array.from(token);
+    for(const character of letters){const letter=document.createElement('span');letter.className='twist-letter';letter.textContent=character;container.append(letter);}
+    if(latin)fragment.append(container);
+   }
+   const text=document.createElement('span');text.className='twist-text';
+   text.append(fragment);node.replaceWith(text);
+  }
+  return true;
+ }
+ function playTwist(control){
+  if(reduced.matches)return;
+  const letters=[...control.querySelectorAll('.twist-letter,.top-letter')];
+  (twistFlights.get(control)||[]).forEach(a=>a.cancel());
+  const stagger=Math.min(45,360/Math.max(1,letters.length-1));
+  twistFlights.set(control,letters.map((letter,index)=>letter.animate([
+   {transform:'perspective(220px) rotateY(0deg)'},
+   {transform:'perspective(220px) rotateY(180deg)',offset:.5},
+   {transform:'perspective(220px) rotateY(360deg)'}
+  ],{duration:750,delay:index*stagger,easing:'cubic-bezier(.22,1,.36,1)'})));
+ }
+ function attachTwist(control){
+  if(twistRoots.has(control))return;
+  twistRoots.add(control);
+  if(!control.matches('.back-to-top'))decorateTwist(control);
+  control.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')playTwist(control);});
+  control.addEventListener('focus',()=>playTwist(control));
+  control.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')playTwist(control);});
+ }
+ reduced.addEventListener('change',()=>{
+  if(reduced.matches)for(const control of twistRoots)(twistFlights.get(control)||[]).forEach(a=>a.cancel());
+ });
+
  const controls = new Map();
  const flights = new Map();
  const closeLabel = document.documentElement.lang==='en' ? 'Close full analysis' : '收合完整分析';
@@ -78,21 +139,8 @@
  revealHash();
  // One-shot vertical letter twist on focus/hover or touch, with native hash navigation.
  const topLink=document.querySelector('.back-to-top');
- let twists=[];
- reduced.addEventListener('change',()=>{if(reduced.matches)twists.forEach(a=>a.cancel());});
- function twist(){
-  if(reduced.matches)return;
-  twists.forEach(a=>a.cancel());
-  twists=[...topLink.querySelectorAll('.top-letter')].map((letter,index)=>letter.animate([
-   {transform:'perspective(220px) rotateY(0deg)'},
-   {transform:'perspective(220px) rotateY(180deg)',offset:.5},
-   {transform:'perspective(220px) rotateY(360deg)'}
-  ],{duration:750,delay:index*45,easing:'cubic-bezier(.22,1,.36,1)'}));
- }
  if(topLink){
-  topLink.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')twist();});
-  topLink.addEventListener('focus',twist);
-  topLink.addEventListener('pointerdown',event=>{if(event.pointerType==='touch')twist();});
+  attachTwist(topLink);
   topLink.addEventListener('click',event=>{
    if(event.metaKey||event.ctrlKey||event.shiftKey||event.altKey)return;
    event.preventDefault();
@@ -103,4 +151,18 @@
    hero.setAttribute('tabindex','-1');hero.focus({preventScroll:true});
   });
  }
+
+ const interactiveText='button,.text-link,.flow a,.nav-links>a,.chapter-menu>summary,.chapter-menu li a,.evidence-body details>summary,.footer-links a,.scroll-cue,.lightbox-footer a';
+ document.querySelectorAll(interactiveText).forEach(attachTwist);
+ // Label changes (open/close, actual size/fit) keep the same animation and wording.
+ const labelObserver=new MutationObserver(records=>{
+  const changed=new Set();
+  for(const record of records){
+   const node=record.target.nodeType===Node.ELEMENT_NODE?record.target:record.target.parentElement;
+   const control=node.closest(interactiveText);
+   if(control&&twistRoots.has(control))changed.add(control);
+  }
+  for(const control of changed)if(decorateTwist(control)&&control.matches(':hover,:focus-visible'))playTwist(control);
+ });
+ for(const control of twistRoots)if(!control.matches('.back-to-top'))labelObserver.observe(control,{childList:true,subtree:true});
 })();
